@@ -1,12 +1,7 @@
 #include <iostream>;
-//woah
-#include <cmath>;
-// hello!!!!
-//hi
 
-//hi
+#include <cmath>;
+
 
 
 using namespace std;
-
-//weeeeee
