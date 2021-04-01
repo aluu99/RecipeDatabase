@@ -10,6 +10,7 @@ using namespace std;
 
 int main() {
     cout << "Made it to main!\n";
-    record first;
+    record test;
+    test.get_name();
     cout << "Back to main!\n";
 }

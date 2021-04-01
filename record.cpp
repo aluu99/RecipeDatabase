@@ -18,7 +18,8 @@ using namespace std;
     }
 
     int record::get_name() const{
-
+        cout << "Get_name\n";
+        return -1;
     }
 
     int record::get_time() const{
