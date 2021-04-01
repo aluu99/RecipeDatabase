@@ -15,3 +15,18 @@
 #   -Wnon-virtual-dtor warns about non-virtual destructors
 #   -g puts debugging info into the executables (makes them larger)
 CPPFLAGS = -std=c++17 -Wall -Wextra -Werror -Wfatal-errors -Wno-sign-compare -Wnon-virtual-dtor -g
+
+main_test: main.o menu.o record.o database.o 
+	g++ -o main_test main.o menu.o record.o database.o 
+
+menu:
+	g++ -c $(CPPFLAGS) menu.cpp 
+
+record:
+	g++ -c $(CPPFLAGS) record.cpp
+
+database:
+	g++ -c $(CPPFLAGS) database.cpp 
+
+clean:
+	rm -f main_test main.o menu.o record.o database.o 
