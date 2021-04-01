@@ -2,6 +2,7 @@
 #define DATABASE_H
 
 #include <iostream>
+#include <vector>
 #include "cmpt_error.h"
 #include "record.h"
 
