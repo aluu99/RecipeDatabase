@@ -6,8 +6,9 @@
 using namespace std;
 
     record::record(){
-
+        cout << "It worked!\n";
     }
+
     record::record(const record& other){
 
     }
@@ -81,5 +82,5 @@ using namespace std;
     }
 
     void record::print() const{
-        
+
     }
