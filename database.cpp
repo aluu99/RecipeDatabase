@@ -2,6 +2,6 @@
 #include <vector>
 #include "cmpt_error.h"
 #include "database.h"
-#include "record.h"
+#include "recipe.h"
 
 using namespace std;
