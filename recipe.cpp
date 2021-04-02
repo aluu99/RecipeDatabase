@@ -5,21 +5,12 @@
 
 using namespace std;
 
-/*
-    string name;
-    int time;
-    string meal;
-    vector<ingred> ingreds;
-    string diet;
-*/
-
-
     recipe::recipe(){
         //TODO: ask for all the info
-        cout << "It worked!\n";
+        
     }
 
-    recipe::recipe(string n, int t, string m, vector<ingred> i, string d)
+    recipe::recipe(string n, int t, string m, vector<ingred> i, vector<string> d)
     : name(n), time(t), meal(m), ingreds(i), diet(d) { }
 
     recipe::recipe(const recipe& other)
@@ -45,8 +36,8 @@ using namespace std;
         return ingreds;
     }
 
-    string recipe::get_diet() const{
-        return diet;
+    string recipe::get_diet(int i) const{
+        return diet.at(i);
     }
 
     ingred recipe::get_ingred(int i) const{
@@ -66,11 +57,19 @@ using namespace std;
     }
 
     void recipe::set_time(int t){
+        if(t <= 0){
+            cmpt::error("Invalid time amount passed.");
+        }
+
         time = t;
     }
 
     void recipe::set_meal(string s){
-            meal = s;
+        if(!(s == "breakfast" || s == "lunch" || s == "dinner")){
+            cmpt::error("Invalid meal type passed.");
+        }
+
+        meal = s;
     }
 
     void recipe::set_ingreds(vector<ingred> recipes){
@@ -88,10 +87,18 @@ using namespace std;
         ingreds.erase(ingreds.begin() + index);
     }
 
-    void recipe::set_diet(string s){
-        diet = s;
+    void recipe::set_diet(vector<string> d){
+        diet = d;
     }
 
+    void recipe::add_diet(string d){
+        diet.push_back(d);
+    }
+
+    void recipe::delete_diet(int index){
+        diet.erase(diet.begin() + index);
+    }
+    
     void recipe::set_ingred(int i, string itm, string amt){
         recipe::set_ingred_item(i, itm);
         recipe::set_ingred_amount(i, amt);

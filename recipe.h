@@ -18,11 +18,11 @@ private:
     int time;
     string meal;
     vector<ingred> ingreds;
-    string diet;
+    vector<string> diet;
 
 public:
     recipe();
-    recipe(string n, int t, string m, vector<ingred> i, string d);
+    recipe(string n, int t, string m, vector<ingred> i, vector<string> d);
     recipe(const recipe& other);
 
     ~recipe();
@@ -31,7 +31,7 @@ public:
     int get_time() const;
     string get_meal() const;
     vector<ingred> get_ingreds() const;
-    string get_diet() const;
+    string get_diet(int i) const;
     ingred get_ingred(int i) const;
     string get_ingred_item(int i) const;
     string get_ingred_amount(int i) const;
@@ -39,10 +39,15 @@ public:
     void set_name(string s);
     void set_time(int t);
     void set_meal(string s);
+    
     void set_ingreds(vector<ingred> recipes);
     void add_ingred(ingred i);
     void delete_ingred(int index);
-    void set_diet(string s);
+    
+    void set_diet(vector<string> d);
+    void add_diet(string d);
+    void delete_diet(int index);
+
     void set_ingred(int i, string itm, string amt);
     void set_ingred_item(int i, string s);
     void set_ingred_amount(int i, string s);
