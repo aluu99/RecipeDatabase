@@ -14,6 +14,7 @@ struct ingred {
 
 class recipe {
 private:
+    //REMOVE AMOUNT AND ADD URL
     string name;
     int time;
     string meal;
