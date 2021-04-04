@@ -5,19 +5,21 @@
 #include <vector>
 #include "cmpt_error.h"
 #include "recipe.h"
+#include <fstream>
 
 using namespace std;
 
 struct search_result {
     string name;
     int idx;
-    int search_num;
+    int search_num; 
 };
 
 class database {
 private:
     vector<recipe> recipe_box;
     vector<recipe> recipe_box_time_sorted;
+    string file;
 
 public:
     database();

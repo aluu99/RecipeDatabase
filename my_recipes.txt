@@ -1,0 +1,10 @@
+shortbread
+35
+pizza
+120
+alfredo
+45
+nacho chips
+10
+beggar's pie
+75
