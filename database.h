@@ -39,11 +39,12 @@ public:
     int get_recipe_time_full(int t) const;
     int get_recipe_time_range(int t_begin, int t_end) const;
 
-    void add_recipe();
+    void add_recipe(string n, string url, int t, string m, vector<string> i, vector<string> d);
     void delete_recipe();
     void edit_recipe();
     void print_recipe_name();
     void print_recipe_whole();
+    void read_file(string f);
 };
 
 

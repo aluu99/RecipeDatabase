@@ -94,8 +94,10 @@ using namespace std;
 
     }
 
-    void database::add_recipe(){
+    void database::add_recipe(string n, string url, int t, string m, vector<string> i, vector<string> d){
+        recipe new_rec(n, url, t, m, i, d);
 
+        // add insertion
     }
 
     void database::delete_recipe(){
@@ -114,14 +116,13 @@ using namespace std;
         
     }
 
-    void read_file(string f){
+    void database::read_file(string f){
         ifstream file;
         file.open(f);
 
         if(file.is_open()){
+            
 
         } else 
             cmpt::error("Saved file could not open");
-
-        
     }

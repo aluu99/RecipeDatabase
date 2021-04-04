@@ -21,7 +21,7 @@ private:
 
 public:
     recipe();
-    recipe(string n, int t, string m, vector<string> i, vector<string> d);
+    recipe(string n, string url, int t, string m, vector<string> i, vector<string> d);
     recipe(const recipe& other);
 
     ~recipe();
