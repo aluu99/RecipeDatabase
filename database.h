@@ -28,6 +28,7 @@ public:
 
     ~database();
 
+    recipe get(int i) const;
     int get_recipe_name_full(string s) const;
     int get_recipe_name_part(string s) const;
     int get_recipe_diet_full(string s) const;
