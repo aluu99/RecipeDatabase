@@ -56,8 +56,8 @@ using namespace std;
         name = s;
     }
 
-    string recipe::get_name() const{
-        return name;
+    void recipe::set_url(string s) {
+        url = s;
     }
 
     vector<string> recipe::get_meal_options() const{

@@ -39,6 +39,10 @@ using namespace std;
 
     database::~database() {}
 
+    recipe database::get(int i) const{
+        return recipe_box.at(i);
+    }
+
     int database::get_recipe_name_full(string s) const{
         vector<search_result> search_results;
         int results = 0;
@@ -48,6 +52,7 @@ using namespace std;
                 search_results.push_back({recipe_box.at(i).get_name(),i,results});
             }
         }
+        return 0;
     }
 
     int database::get_recipe_name_part(string s) const{
@@ -60,38 +65,47 @@ using namespace std;
                 search_results.push_back({recipe_box.at(i).get_name(),i,results});
             }
         }
+        return 0;
     }
 
     int database::get_recipe_diet_full(string s) const{
-
+        cout << s;
+        return 0;
     }
 
     int database::get_recipe_diet_part(string s) const{
-
+        cout << s;
+        return 0;
     }
 
     int database::get_recipe_meal_full(string s) const{
-
+        cout << s;
+        return 0;
     }
 
     int database::get_recipe_meal_part(string s) const{
-
+        cout << s;
+        return 0;
     }
 
     int database::get_recipe_ingred_full(string s) const{
-
+        cout << s;
+        return 0;
     }
 
     int database::get_recipe_ingred_part(string s) const{
-
+        cout << s;
+        return 0;
     }
 
     int database::get_recipe_time_full(int t) const{
-
+        cout << t;
+        return 0;
     }
 
     int database::get_recipe_time_range(int t_begin, int t_end) const{
-
+        cout << t_begin << t_end;
+        return 0;
     }
 
     void database::add_recipe(){
