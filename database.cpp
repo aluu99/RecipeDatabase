@@ -6,21 +6,24 @@
 
 using namespace std;
 
-    database::database() {
-        cout << "Would you like to add a recipe? Y/N: ";
+    database::database() {}
+    database::database(const database& orig)
+    :recipe_box(orig.recipe_box), recipe_box_time_sorted(orig.recipe_box_time_sorted) {}
+    database::database(string file){
 
     }
-    database::database(const database& orig)
-    :recipe_box(orig.recipe_box) {}
 
     database::~database() {}
-    
-    int database::get_recipe_idx(int idx) const{
-
-    }
 
     int database::get_recipe_name_full(string s) const{
-
+        vector<search_result> search_results;
+        int results = 0;
+        for (int i = 0; i < recipe_box.size(); i++){
+            if (recipe_box.at(i).get_name() == s){
+                results++;
+                search_results.push_back({recipe_box.at(i).get_name(),i,results});
+            }
+        }
     }
 
     int database::get_recipe_name_part(string s) const{

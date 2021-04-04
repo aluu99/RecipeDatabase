@@ -8,17 +8,24 @@
 
 using namespace std;
 
+struct search_result {
+    string name;
+    int idx;
+    int search_num;
+};
+
 class database {
 private:
     vector<recipe> recipe_box;
+    vector<recipe> recipe_box_time_sorted;
 
 public:
     database();
     database(const database& orig);
+    database(string file);
 
     ~database();
-    
-    int get_recipe_idx(int idx) const;
+
     int get_recipe_name_full(string s) const;
     int get_recipe_name_part(string s) const;
     int get_recipe_diet_full(string s) const;
