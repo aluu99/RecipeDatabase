@@ -5,23 +5,31 @@
 
 using namespace std;
 
+    // default constructor
     recipe::recipe(){
-        //TODO: ask for all the info
-        
     }
 
-    recipe::recipe(string n, int t, string m, vector<ingred> i, vector<string> d)
+    // constructor
+    recipe::recipe(string n, int t, string m, vector<string> i, vector<string> d)
     : name(n), time(t), meal(m), ingreds(i), diet(d) { }
 
+
+    // copy constructor
     recipe::recipe(const recipe& other)
     : recipe(other.name,other.time,other.meal,other.ingreds,other.diet) { }
 
+    // destructor
     recipe::~recipe(){
         
     }
     
+    // methods
     string recipe::get_name() const{
         return name;
+    }
+
+    string recipe::get_url() const{
+        return url;
     }
 
     int recipe::get_time() const{
@@ -32,7 +40,7 @@ using namespace std;
         return meal;
     }
 
-    vector<ingred> recipe::get_ingreds() const{
+    vector<string> recipe::get_ingreds() const{
         return ingreds;
     }
 
@@ -40,20 +48,24 @@ using namespace std;
         return diet.at(i);
     }
 
-    ingred recipe::get_ingred(int i) const{
+    string recipe::get_ingred(int i) const{
         return ingreds.at(i);
-    }
-
-    string recipe::get_ingred_item(int i) const{
-        return ingreds.at(i).item;
-    }
-
-    string recipe::get_ingred_amount(int i) const{
-        return ingreds.at(i).amount;
     }
 
     void recipe::set_name(string s){
         name = s;
+    }
+
+    string recipe::get_name() const{
+        return name;
+    }
+
+    vector<string> recipe::get_meal_options() const{
+        return meal_options;
+    }
+
+    vector<string> recipe::get_diet_options() const{
+        return diet_options;
     }
 
     void recipe::set_time(int t){
@@ -72,16 +84,21 @@ using namespace std;
         meal = s;
     }
 
-    void recipe::set_ingreds(vector<ingred> recipes){
+    void recipe::set_ingreds(vector<string> recipes){
         ingreds.clear();
         for (int i = 0; i < recipes.size(); i++){
-            ingreds.push_back({recipes.at(i).item,recipes.at(i).amount});
+            ingreds.push_back(recipes.at(i));
         }
     }
 
-    void recipe::add_ingred(ingred i){
-        ingreds.push_back(i);
+    void recipe::add_ingred(string s){
+        ingreds.push_back(s);
     }
+
+    void recipe::change_ingred(int i, string s){
+        ingreds.at(i) = s;
+    }
+
 
     void recipe::delete_ingred(int index){
         ingreds.erase(ingreds.begin() + index);
@@ -97,19 +114,6 @@ using namespace std;
 
     void recipe::delete_diet(int index){
         diet.erase(diet.begin() + index);
-    }
-    
-    void recipe::set_ingred(int i, string itm, string amt){
-        recipe::set_ingred_item(i, itm);
-        recipe::set_ingred_amount(i, amt);
-    }
-
-    void recipe::set_ingred_item(int i, string s){
-        ingreds.at(i).item = s;
-    }
-
-    void recipe::set_ingred_amount(int i, string s){
-        ingreds.at(i).amount = s;
     }
 
     void recipe::print() const{
