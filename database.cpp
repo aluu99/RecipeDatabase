@@ -3,11 +3,7 @@
 #include "cmpt_error.h"
 #include "database.h"
 #include "recipe.h"
-<<<<<<< HEAD
-#include "fstream"
-=======
 #include <fstream>
->>>>>>> 5a89b1c8d658984c965ff61668a262976b8649b4
 
 using namespace std;
 
