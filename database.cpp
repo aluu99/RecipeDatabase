@@ -3,6 +3,7 @@
 #include "cmpt_error.h"
 #include "database.h"
 #include "recipe.h"
+#include "fstream"
 
 using namespace std;
 
@@ -79,5 +80,17 @@ using namespace std;
     }
 
     void database::print_recipe_whole(){
+        
+    }
+
+    void read_file(string f){
+        ifstream file;
+        file.open(f);
+
+        if(file.is_open()){
+
+        } else 
+            cmpt::error("Saved file could not open");
+
         
     }
