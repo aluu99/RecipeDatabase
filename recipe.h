@@ -29,12 +29,10 @@ public:
     string get_name() const;
     string get_url() const;
     int get_time() const;
-    string get_meal() const;
     vector<string> get_ingreds() const;
-    string get_diet(int i) const;
     string get_ingred(int i) const;
-    vector<string> get_meal_options() const;
-    vector<string> get_diet_options() const;
+    vector<string> get_meals() const;
+    vector<string> get_diets() const;
 
 
     void set_name(string s);

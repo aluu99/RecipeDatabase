@@ -13,8 +13,12 @@ int main() {
     recipe test;
     test.get_name();
     database test0("my_recipes.txt");
-    for (int i = 0; i < 8; i++){
+    for (int i = 0; i < 5; i++){
         cout << test0.get(i).get_name() << " " << test0.get(i).get_time() << endl;
     }
+    for (int i = 0; i < 5; i++){
+        cout << test0.get_time(i).get_name() << " " << test0.get_time(i).get_time() << endl;
+    }
+    test0.print_recipe_name(2);
     cout << "Back to main!\n";
 }
