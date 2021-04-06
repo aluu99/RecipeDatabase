@@ -10,12 +10,12 @@ using namespace std;
     }
 
     // constructor
-    recipe::recipe(string n, string u, int t, string m, vector<string> i, vector<string> d)
-    : name(n), url(u), time(t), meal(m), ingreds(i), diet(d) { }
+    recipe::recipe(string n, string u, int t, string m, vector<string> i, vector<string> d, int idd)
+    : name(n), url(u), time(t), meal(m), ingreds(i), diet(d), id(idd) { }
 
     // copy constructor
     recipe::recipe(const recipe& other)
-    : recipe(other.name,other.url, other.time,other.meal,other.ingreds,other.diet) { }
+    : recipe(other.name,other.url, other.time,other.meal,other.ingreds,other.diet, other.id) { }
 
     // destructor
     recipe::~recipe(){
@@ -23,6 +23,10 @@ using namespace std;
     }
     
     // methods
+    int recipe::get_id() const{
+        return id;
+    }
+
     string recipe::get_name() const{
         return name;
     }
@@ -42,6 +46,10 @@ using namespace std;
 
     string recipe::get_ingred(int i) const{
         return ingreds.at(i);
+    }
+
+    void recipe::set_id(int i){
+        id = i;
     }
 
     void recipe::set_name(string s){

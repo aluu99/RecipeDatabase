@@ -1,10 +1,15 @@
 shortbread
 35
+1
 pizza
 120
+2
 alfredo
 45
+3
 nacho chips
 10
+4
 beggar's pie
 75 
+5

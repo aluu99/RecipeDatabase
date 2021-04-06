@@ -10,7 +10,7 @@ using namespace std;
         
     int database::binary_search_name(vector<recipe> r, int low, int high, string key){
         int mid;
-
+        
         if(low == high)
             return low;
 
@@ -24,7 +24,7 @@ using namespace std;
             return mid;
     }
 
-    int database::binary_search_time(vector<recipe> r, int low, int high, int key){
+    int database::binary_search_time(vector<recipe_time> r, int low, int high, int key){
         int mid;
 
         if(low == high)
@@ -32,9 +32,9 @@ using namespace std;
 
         mid = low + ((high - low) / 2);
 
-        if (key > r[mid].get_time())
+        if (key > r[mid].time)
             return binary_search_time(r, mid + 1, high, key);
-        else if (key < r[mid].get_time())
+        else if (key < r[mid].time)
             return binary_search_time(r, low, mid, key);
         else
             return mid;
@@ -50,9 +50,13 @@ using namespace std;
     
     void database::add_by_time(const recipe r){
         int correct_i;
-
-        correct_i = binary_search_time(recipe_box_time, 0, recipe_box_time.size(), r.get_time());
-        recipe_box_time.insert(recipe_box_time.begin() + correct_i, r);
+        recipe_time temp;
+        int time = r.get_time();
+        int id = r.get_id();
+        temp.time = time;
+        temp.id = id;
+        correct_i = binary_search_time(recipe_box_time, 0, recipe_box_time.size(), time);
+        recipe_box_time.insert(recipe_box_time.begin() + correct_i, temp);
     }
     
     database::database() {}
@@ -75,6 +79,12 @@ using namespace std;
             }
             int input_int = stoi(input);
             temp.set_time(input_int);
+            getline(data,input);
+            if (data.fail()){
+                break;
+            }
+            input_int = stoi(input);
+            temp.set_id(input_int);
             add_recipe(temp);
         }
     }
@@ -86,7 +96,17 @@ using namespace std;
     }
 
     recipe database::get_time(int i) const{
-        return recipe_box_time.at(i);
+        int j;
+        for (j = 0; j < recipe_box.size(); j++){
+            if (recipe_box_time[i].id == recipe_box.at(j).get_id()){
+                break;
+            }
+            if (j >= recipe_box.size()){
+                cmpt::error("Error: This recipe does not exist in your box.");
+            }
+        }
+        
+        return recipe_box.at(j);
     }
 
     vector<search_result> database::search_recipe_name_full(string s) const{
@@ -244,6 +264,11 @@ using namespace std;
 
     void database::delete_recipe(int i){
         recipe_box.erase(recipe_box.begin() + i);
+        for (int j = 0; j < recipe_box_time.size(); j++){
+            if (recipe_box_time.at(j).id == recipe_box[i].get_id()){
+                recipe_box_time.erase(recipe_box_time.begin() + j);
+            }
+        }
     }
 
     void database::edit_recipe(int i){
@@ -262,14 +287,4 @@ using namespace std;
     void database::print_recipe_whole(int i){
         cout << i;
     }
-
-    // void database::read_file(string f){
-    //     ifstream file;
-    //     file.open(f);
-
-    //     if(file.is_open()){
-            
-
-    //     } else 
-    //         cmpt::error("Saved file could not open");
-    // }
+    

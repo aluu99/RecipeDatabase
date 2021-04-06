@@ -15,17 +15,19 @@ private:
     string meal;
     vector<string> ingreds;
     vector<string> diet;
+    int id;
     
-    vector<string> meal_options = {"breakfast", "lunch", "dinner", "snack", "drink", "dessert"};
-    vector<string> diet_options = {"meat, vegetarian, vegan, gluten-free, low-sugar, pescatarian, dairy free"};
+    const vector<string> meal_options = {"breakfast", "lunch", "dinner", "snack", "drink", "dessert"};
+    const vector<string> diet_options = {"meat, vegetarian, vegan, gluten-free, low-sugar, pescatarian, dairy free"};
 
 public:
     recipe();
-    recipe(string n, string url, int t, string m, vector<string> i, vector<string> d);
+    recipe(string n, string url, int t, string m, vector<string> i, vector<string> d, int id);
     recipe(const recipe& other);
 
     ~recipe();
 
+    int get_id() const;
     string get_name() const;
     string get_url() const;
     int get_time() const;
@@ -34,7 +36,7 @@ public:
     vector<string> get_meals() const;
     vector<string> get_diets() const;
 
-
+    void set_id(int i);
     void set_name(string s);
     void set_url(string url);
     void set_time(int t);

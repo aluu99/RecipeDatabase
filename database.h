@@ -15,16 +15,21 @@ struct search_result {
     int search_num; 
 };
 
+struct recipe_time{
+    int time;
+    int id;
+};
+
 class database {
 private:
     vector<recipe> recipe_box;
-    vector<recipe> recipe_box_time;
+    vector<recipe_time> recipe_box_time;
     string file;
     void add_by_name(const recipe r);
     void add_by_num(const recipe r);
     void add_by_time(const recipe r);
     int binary_search_name(vector<recipe> r, int low, int high, string key);
-    int binary_search_time(vector<recipe> r, int low, int high, int key);
+    int binary_search_time(vector<recipe_time> r, int low, int high, int key);
 
 public:
     database();
