@@ -23,7 +23,7 @@ using namespace std;
 
     /***************************METHODS*********************/
 
-    // GETTER FUNCTIONS
+    // GETTER METHODS
     string recipe::get_name() const{
         return name;
     }
@@ -69,7 +69,7 @@ using namespace std;
     }
 
 
-    // SETTER FUNCTIONS
+    // SETTER METHODS
     void recipe::set_name(string s){
         name = s;
     }
