@@ -18,7 +18,7 @@ private:
     int id;
     
     const vector<string> meal_options = {"breakfast", "lunch", "dinner", "snack", "drink", "dessert"};
-    const vector<string> diet_options = {"meat, vegetarian, vegan, gluten-free, low-sugar, pescatarian, dairy free"};
+    const vector<string> diet_options = {"meat, vegetarian, vegan, gluten-free, low-sugar, pescatarian, dairy free, n/a"};
 
 public:
     recipe();
@@ -27,31 +27,34 @@ public:
 
     ~recipe();
 
-    int get_id() const;
+    
     string get_name() const;
     string get_url() const;
     int get_time() const;
+    string get_meal() const;
     vector<string> get_ingreds() const;
     string get_ingred(int i) const;
-    vector<string> get_meals() const;
+    int get_num_ingreds() const;
     vector<string> get_diets() const;
-
-    void set_id(int i);
+    string get_diet(int i) const;
+    int get_num_diets() const;
+    int get_id() const;
+    
     void set_name(string s);
     void set_url(string url);
     void set_time(int t);
     void set_meal(string s);
-    
     void set_ingreds(vector<string> recipes);
-    void add_ingred(string i);
-    void delete_ingred(int index);
-    void change_ingred(int i, string s);
+    void set_diets(vector<string> d);
+    void set_id(int i);
     
-    void set_diet(vector<string> d);
+    void add_ingred(string i);
+    void change_ingred(int i, string s);
+    void delete_ingred(int index);
+    
     void add_diet(string d);
+    void change_diet(int i, string d);
     void delete_diet(int index);
-
-
 
     void print() const;
 };

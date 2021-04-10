@@ -8,7 +8,7 @@
 #include <fstream>
 
 using namespace std;
-
+//do we need this stuct?
 struct search_result {
     string name;
     int idx;
@@ -28,18 +28,19 @@ private:
     void add_by_name(const recipe r);
     void add_by_num(const recipe r);
     void add_by_time(const recipe r);
-    int binary_search_name(vector<recipe> r, int low, int high, string key);
+    int binary_search_name(vector<recipe> const r, int low, int high, string key);
     int binary_search_time(vector<recipe_time> r, int low, int high, int key);
 
 public:
     database();
+    database(vector<recipe> by_name, vector<recipe> by_time);
     database(const database& orig);
     database(string file);
 
     ~database();
 
     recipe get(int i) const;
-    recipe get_time(int i) const;
+    recipe get_from_time(int i) const;
     vector<search_result> search_recipe_name_full(string s) const;
     vector<search_result> search_recipe_name_part(string s) const;
     vector<search_result> search_recipe_diet_full(string s) const;

@@ -7,8 +7,9 @@
 #include <fstream>
 
 using namespace std;
-        
-    int database::binary_search_name(vector<recipe> r, int low, int high, string key){
+
+/*
+    int database::binary_search_name(vector<recipe> const r, int low, int high, string key){
         int mid;
         
         if(low == high)
@@ -23,6 +24,7 @@ using namespace std;
         else 
             return mid;
     }
+    */
 
     int database::binary_search_time(vector<recipe_time> r, int low, int high, int key){
         int mid;
@@ -39,30 +41,44 @@ using namespace std;
         else
             return mid;
     }
-        
+/*
     void database::add_by_name(const recipe r){
         int correct_i;
-
+        
         correct_i = binary_search_name(recipe_box, 0, recipe_box.size(), r.get_name());
-        recipe_box.insert(recipe_box.begin() + correct_i, r);
+        //recipe_box.insert(recipe_box.begin() + correct_i, r);
     }
 
     
     void database::add_by_time(const recipe r){
         int correct_i;
         recipe_time temp;
-        int time = r.get_time();
+        //int time = ;
         int id = r.get_id();
-        temp.time = time;
+        temp.time = r.get_time();
         temp.id = id;
-        correct_i = binary_search_time(recipe_box_time, 0, recipe_box_time.size(), time);
-        recipe_box_time.insert(recipe_box_time.begin() + correct_i, temp);
+        correct_i = binary_search_time(recipe_box_time, 0, recipe_box_time.size(), temp.time);
+        recipe_box_time.insert(recipe_box_time.begin() + correct_i, temp); //TODO: ensure working correctly
     }
-    
+  */  
     database::database() {}
+
     database::database(const database& orig)
     :recipe_box(orig.recipe_box), recipe_box_time(orig.recipe_box_time) {}
-    database::database(string file_name)
+
+    database::database(vector<recipe> by_name, vector<recipe> by_time)
+    :recipe_box(by_name) 
+    {
+        for(int i = 0; i < by_time.size(); i++){
+            recipe_time temp;
+
+            temp.time = by_time.at(i).get_time();
+            temp.id = by_time.at(i).get_id();
+
+            recipe_box_time.push_back(temp);
+        }
+    }
+/*    database::database(string file_name)
     : file(file_name) {
         ifstream data(file);
         while (true){
@@ -95,14 +111,14 @@ using namespace std;
         return recipe_box.at(i);
     }
 
-    recipe database::get_time(int i) const{
+    recipe database::get_from_time(int i) const{
         int j;
         for (j = 0; j < recipe_box.size(); j++){
             if (recipe_box_time[i].id == recipe_box.at(j).get_id()){
                 break;
             }
             if (j >= recipe_box.size()){
-                cmpt::error("Error: This recipe does not exist in your box.");
+                cmpt::error("Error: This recipe does exist in your box.");
             }
         }
         
@@ -258,12 +274,12 @@ using namespace std;
     }
 
     void database::add_recipe(recipe r){
-        add_by_name(r);
+        //add_by_name(r);
         add_by_time(r);
     }
 
     void database::delete_recipe(int i){
-        recipe_box.erase(recipe_box.begin() + i);
+        //recipe_box.erase(recipe_box.begin() + i);
         for (int j = 0; j < recipe_box_time.size(); j++){
             if (recipe_box_time.at(j).id == recipe_box[i].get_id()){
                 recipe_box_time.erase(recipe_box_time.begin() + j);
@@ -272,6 +288,8 @@ using namespace std;
     }
 
     void database::edit_recipe(int i){
+        // TODO!!!!
+        
         cout << i;
     }
 
@@ -287,4 +305,4 @@ using namespace std;
     void database::print_recipe_whole(int i){
         cout << i;
     }
-    
+   */

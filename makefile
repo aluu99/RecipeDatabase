@@ -16,8 +16,8 @@
 #   -g puts debugging info into the executables (makes them larger)
 CPPFLAGS = -std=c++17 -Wall -Wextra -Werror -Wfatal-errors -Wno-sign-compare -Wnon-virtual-dtor -g
 
-main_test: main.o menu.o recipe.o database.o 
-	g++ -o main_test main.o menu.o recipe.o database.o -lncurses
+main_test: main.o menu.o recipe.o database.o test.o
+	g++ -o main_test main.o menu.o recipe.o database.o test.o -lncurses
 
 menu:
 	g++ -c $(CPPFLAGS) menu.cpp -lncurses 
@@ -28,5 +28,8 @@ recipe:
 database:
 	g++ -c $(CPPFLAGS) database.cpp -lncurses 
 
+test:
+	g++ -c $(CPPFLAGS) test.cpp -lncurses 
+
 clean:
-	rm -f main_test main.o menu.o recipe.o database.o 
+	rm -f main_test main.o menu.o recipe.o database.o test.o
