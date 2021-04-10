@@ -18,7 +18,7 @@ private:
     int id;
     
     const vector<string> meal_options = {"breakfast", "lunch", "dinner", "snack", "drink", "dessert"};
-    const vector<string> diet_options = {"meat, vegetarian, vegan, gluten-free, low-sugar, pescatarian, dairy free, n/a"};
+    const vector<string> diet_options = {"meat", "vegetarian", "vegan", "gluten-free", "low-sugar", "pescatarian", "dairy free", "n/a"};
 
 public:
     recipe();
@@ -53,7 +53,6 @@ public:
     void delete_ingred(int index);
     
     void add_diet(string d);
-    void change_diet(int i, string d);
     void delete_diet(int index);
 
     void print() const;

@@ -107,7 +107,7 @@ using namespace std;
     }
 
 
-    // INGREDIENT METHODS
+    // OTHER METHODS
     void recipe::add_ingred(string s){
         ingreds.push_back(s);
     }
@@ -120,21 +120,37 @@ using namespace std;
         ingreds.erase(ingreds.begin() + index);
     }
 
-
-    // DIET METHODS
     void recipe::add_diet(string d){
+        // if n/a is chosen, we erase all othe rdiets
+        if(d == "n/a"){
+            diet.clear();
+        }
+        
         diet.push_back(d);
-    }
-
-    void recipe::change_diet(int i, string d){
-        ingreds.at(i) = d;
     }
 
     void recipe::delete_diet(int index){
         diet.erase(diet.begin() + index);
     }
 
-    // OTHER
     void recipe::print() const{
+        cout << "Name: " << name << "\n";
+        cout << "URL: " << url << "\n";
+        cout << "Time to make: " << time << " minutes \n";
+        cout << "Meal type: " << meal << "\n";
+        cout << "Ingredients: ";
+
+        for(int i = 0; i < ingreds.size() - 1; i++){
+            cout << ingreds[i] << ", ";
+        }
         
+        cout << ingreds[ingreds.size() - 1] << "\n";
+
+        cout << "Diets: ";
+
+        for(int i = 0; i < diet.size() - 1; i++){
+            cout << diet[i] << ", ";
+        }
+
+        cout << diet[diet.size() - 1] << "\n";
     }

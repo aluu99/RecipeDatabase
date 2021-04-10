@@ -8,7 +8,7 @@
 #include <fstream>
 
 using namespace std;
-//do we need this stuct?
+
 struct search_result {
     string name;
     int idx;
@@ -25,6 +25,7 @@ private:
     vector<recipe> recipe_box;
     vector<recipe_time> recipe_box_time;
     string file;
+    int id_total;
     void add_by_name(const recipe r);
     void add_by_num(const recipe r);
     void add_by_time(const recipe r);

@@ -274,8 +274,11 @@ using namespace std;
     }
 
     void database::add_recipe(recipe r){
-        //add_by_name(r);
+        // in menu id must be set to some random thing
+        r.set_id(id_total);
+        add_by_name(r);
         add_by_time(r);
+        id_total++;
     }
 
     void database::delete_recipe(int i){
