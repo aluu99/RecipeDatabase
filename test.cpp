@@ -81,6 +81,13 @@ void binary_search_name_test(){
 
 /**************************TEST FUNCTIONS******************************/
 
+// calls test functions for menu class
+void menu_tests(){
+   cout << "Testing menu class tests ... \n";
+   menu test;
+   cout << "All menu class tests passed! \n";
+}
+
 // calls test functions for database class
 void database_tests(){
     binary_search_name_test();
@@ -120,6 +127,9 @@ void recipe_tests(){
 
     cout << "All recipe class tests passed! \n";
 }
+
+/****************************MENU TEST FUNCTIONS******************************/
+
 
 /****************************RECIPE TEST FUNCTIONS************************************/
 

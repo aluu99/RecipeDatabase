@@ -24,5 +24,6 @@ int main() {
     test0.print_recipe_name(2);
     cout << "Back to main!\n";*/
 
-    recipe_tests();
+    //recipe_tests();
+    menu_tests();
 }

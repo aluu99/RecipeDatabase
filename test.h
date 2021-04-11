@@ -6,6 +6,7 @@
 #include "cmpt_error.h"
 #include "database.h"
 #include "recipe.h"
+#include "menu.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ void recipe_copy_constructor_test();
 
 void database_tests();
 void recipe_tests();
-
+void menu_tests();
 
 void get_name_test();
 void get_url_test();
