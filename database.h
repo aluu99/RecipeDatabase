@@ -6,6 +6,7 @@
 #include "cmpt_error.h"
 #include "recipe.h"
 #include <fstream>
+#include <algorithm>
 
 using namespace std;
 
@@ -17,18 +18,21 @@ struct recipe_time{
 class database {
 private:
     vector<recipe> recipe_box;
-    vector<recipe_time> recipe_box_time;
+    vector<recipe*> recipe_box_name;
+    vector<recipe*> recipe_box_time;
     string file;
-    int id_total;
-    void add_by_name(const recipe r);
+    vector<string> seperate_list(const string& list);
+    void save_file();
+    
     void add_by_num(const recipe r);
-    void add_by_time(const recipe r);
-    int binary_search_name(vector<recipe> const r, int low, int high, string key);
+    //void add_by_time(const recipe r);
+    
     int binary_search_time(vector<recipe_time> r, int low, int high, int key);
 
 public:
+    vector<recipe> testing;
     database();
-    database(vector<recipe> by_name, vector<recipe> by_time);
+    database(vector<recipe> recipes);
     database(const database& orig);
     database(string file);
 
@@ -47,6 +51,9 @@ public:
     vector<int> search_recipe_time_full(int t) const;
     vector<int> search_recipe_time_range(int t_begin, int t_end) const;
 
+
+    void add_by_name(recipe r);
+    void add_by_time(recipe r);
     void add_recipe(recipe r);
     void delete_recipe(int i);
     void edit_recipe(int i);

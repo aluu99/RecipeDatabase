@@ -9,12 +9,12 @@ using namespace std;
     recipe::recipe(){}
 
     // constructor
-    recipe::recipe(string n, string u, int t, string m, vector<string> i, vector<string> d, int iden)
-    : name(n), url(u), time(t), meal(m), ingreds(i), diet(d), id(iden) { }
+    recipe::recipe(string n, string u, int t, string m, vector<string> i, vector<string> d)
+    : name(n), url(u), time(t), meal(m), ingreds(i), diet(d){ }
 
     // copy constructor
     recipe::recipe(const recipe& other)
-    : recipe(other.name,other.url, other.time,other.meal,other.ingreds,other.diet, other.id) { }
+    : recipe(other.name,other.url, other.time,other.meal,other.ingreds,other.diet) { }
 
     // destructor
     recipe::~recipe(){
@@ -64,10 +64,6 @@ using namespace std;
         return diet.size();
     }
 
-    int recipe::get_id() const{
-        return id;
-    }
-
 
     // SETTER METHODS
     void recipe::set_name(string s){
@@ -101,11 +97,6 @@ using namespace std;
     void recipe::set_diets(vector<string> d){
         diet = d;
     }
-
-    void recipe::set_id(int i){
-        id = i;
-    }
-
 
     // OTHER METHODS
     void recipe::add_ingred(string s){

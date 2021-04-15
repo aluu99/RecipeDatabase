@@ -10,10 +10,10 @@ using namespace std;
 
     menu::menu()
     :page(home), last_page(home){
-        //while(true){
+        while(true){
            get_user_choice();
-            //process_choice();
-        //}
+           process_choice();
+        }
     }
 
     menu::~menu() {}
@@ -33,7 +33,7 @@ using namespace std;
             cout << "(" << i + 1 << ") ";
             cout << page[i] << "\n";
         }
-        if (page != home){
+        if (page != home || page != quit){
             cout << "(0) Main Menu\n";
         }
         cout << "(-1) Back\n";
@@ -57,7 +57,7 @@ using namespace std;
                 }    
             } else {
                 // if input is an int and we are in the start menu
-                if((chosen >= 1) && (chosen <= page.size()) || chosen == -1){
+                if(((chosen >= 1) && (chosen <= page.size())) || chosen == -1){
                     valid_input = true;
                 }
             }
@@ -124,8 +124,6 @@ using namespace std;
                     // string n = get_string_input(); 
                     //      - this function makes sure its a string input
                     // 
-                    // results_id = search_exact_name(n);
-                    //      - updates results_id with correct ids
                     //
                     // search_results = update_results()
                     //      - updates results with all search_results with 
@@ -135,8 +133,9 @@ using namespace std;
                     // recipe_choice = get_user_choice
                     // page = recipe_options
                     // get_user_choice
+                    break;
                 case 2:
-                    
+                    break;
             }
         }else if(page == find_by_time){
             switch(user_choice){
@@ -230,11 +229,13 @@ using namespace std;
                     break;
                 case 4:
                     //lists time descending
+                    break;
             }
         }else if(page == quit){
             switch(user_choice){
                 case 1: 
                     // quit_save(); TO-DO!!!!
+                    break;
             }
         }else{
             switch(user_choice){

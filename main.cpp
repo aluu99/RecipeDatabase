@@ -25,5 +25,6 @@ int main() {
     cout << "Back to main!\n";*/
 
     //recipe_tests();
-    menu_tests();
+    //menu_tests();
+    database_tests();
 }

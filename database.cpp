@@ -25,6 +25,64 @@ using namespace std;
             return mid;
     }
     */
+    vector<string> database::seperate_list(const string& list){
+        char next_item = ',';
+        string item = "";
+        vector<string> items;
+        for (int i = 0; i < list.size(); i++){
+            if (list.at(i) == next_item){
+                i++;
+                items.push_back(item);
+                item = "";
+                continue;
+            }
+            item += list.at(i);
+            if (i == list.size() - 1){
+                items.push_back(item);
+            }
+        }
+        return items;
+    }
+
+    void database::save_file(){
+        ifstream data(file);
+        int field = 0;
+        recipe temp;
+
+        while (true){
+            string input = "";
+            getline(data,input);
+            if (data.fail()){
+                break;
+            }
+            if (field == 0){
+                //Name
+                temp.set_name(input);
+            }else if (field == 1){
+                //URL
+                temp.set_url(input);
+            } else if (field == 2){
+                //Time
+                int input_int = stoi(input);
+                temp.set_time(input_int);
+            }else if (field == 3){
+                //Meal
+                temp.set_meal(input);
+            }else if (field == 4){
+                //Ingredients
+                vector<string> list = seperate_list(input);
+                temp.set_ingreds(list);
+            } else {
+                // Diet
+                vector<string> list = seperate_list(input);
+                temp.set_diets(list);
+                testing.push_back(temp);
+                field = 0;
+                continue;
+            }
+            field++;            
+        }
+    }
 
     int database::binary_search_time(vector<recipe_time> r, int low, int high, int key){
         int mid;
@@ -64,49 +122,23 @@ using namespace std;
     database::database() {}
 
     database::database(const database& orig)
-    :recipe_box(orig.recipe_box), recipe_box_time(orig.recipe_box_time) {}
+    :recipe_box(orig.recipe_box), recipe_box_name(orig.recipe_box_name), 
+    recipe_box_time(orig.recipe_box_time), file(orig.file) 
+    {}
 
-    database::database(vector<recipe> by_name, vector<recipe> by_time)
-    :recipe_box(by_name) 
-    {
-        for(int i = 0; i < by_time.size(); i++){
-            recipe_time temp;
-
-            temp.time = by_time.at(i).get_time();
-            temp.id = by_time.at(i).get_id();
-
-            recipe_box_time.push_back(temp);
-        }
-    }
-/*    database::database(string file_name)
+    database::database(vector<recipe> recipes)
+    :recipe_box(recipes) 
+    {}
+    
+    database::database(string file_name)
     : file(file_name) {
-        ifstream data(file);
-        while (true){
-            recipe temp;
-            string input = "";
-            getline(data,input);
-            if (data.fail()){
-                break;
-            }
-            temp.set_name(input);
-            getline(data,input);
-            if (data.fail()){
-                break;
-            }
-            int input_int = stoi(input);
-            temp.set_time(input_int);
-            getline(data,input);
-            if (data.fail()){
-                break;
-            }
-            input_int = stoi(input);
-            temp.set_id(input_int);
-            add_recipe(temp);
-        }
+        save_file();
     }
+
+   
 
     database::~database() {}
-
+/*
     recipe database::get(int i) const{
         return recipe_box.at(i);
     }
@@ -273,13 +305,7 @@ using namespace std;
         return search_results;
     }
 
-    void database::add_recipe(recipe r){
-        // in menu id must be set to some random thing
-        r.set_id(id_total);
-        add_by_name(r);
-        add_by_time(r);
-        id_total++;
-    }
+
 
     void database::delete_recipe(int i){
         //recipe_box.erase(recipe_box.begin() + i);
@@ -308,4 +334,25 @@ using namespace std;
     void database::print_recipe_whole(int i){
         cout << i;
     }
+
+        void database::add_recipe(recipe r){
+        // in menu id must be set to some random thing
+        r.set_id(id_total);
+        add_by_name(r);
+        add_by_time(r);
+        id_total++;
+    }
    */
+
+    /*void database::add_by_name(recipe r){
+
+    }
+
+    void database::add_by_time(recipe r){
+        
+    }
+*/
+    void database::add_recipe(recipe r){
+        recipe_box.push_back(r);
+    }
+  
