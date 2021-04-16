@@ -22,10 +22,11 @@ void database_vector_constructor_test();
 void database_file_constructor_test();
 
 void save_file_test();
+void save_to_file_test();
 void add_by_name_test();
 void add_by_time_test();
-vector<string> eperate_list(const string& list);
 void seperate_list_test();
+void binary_search_name_test();
 
 // Recipe Tests
 void recipe_dflt_constructor_test();
@@ -56,5 +57,7 @@ void delete_ingred_test();
 
 void add_diet_test();
 void delete_diet_test();
+
+int adjust_index(vector<recipe*> rb, int index, string key);
 
 #endif

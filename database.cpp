@@ -25,7 +25,7 @@ using namespace std;
             return mid;
     }
     */
-    vector<string> database::seperate_list(const string& list){
+    vector<string> seperate_list(const string& list){
         char next_item = ',';
         string item = "";
         vector<string> items;
@@ -76,12 +76,44 @@ using namespace std;
                 // Diet
                 vector<string> list = seperate_list(input);
                 temp.set_diets(list);
-                testing.push_back(temp);
+                add_recipe(temp);
                 field = 0;
                 continue;
             }
             field++;            
         }
+        data.close();
+    }
+
+    string database::vector_to_string(const vector<string> list){
+        string info = "";
+        for (int i = 0; i < list.size(); i++){
+            info += list.at(i);
+            if (i != (list.size() - 1)){
+                info += ", ";
+            }
+        }
+        return info;
+    }
+
+    void database::save_to_file(){
+        cout << "Saving file to: " << file << "\n";
+
+        ofstream data(file);
+        for (int i = 0; i < recipe_box.size(); i++){
+            data << recipe_box.at(i).get_name() << "\n";
+            data << recipe_box.at(i).get_url() << "\n";
+            string str_time = to_string(recipe_box.at(i).get_time());
+            data << str_time << "\n";
+            data << recipe_box.at(i).get_meal() << "\n";
+            string str_vector = vector_to_string(recipe_box.at(i).get_ingreds());
+            data << str_vector << "\n";
+            str_vector = vector_to_string(recipe_box.at(i).get_diets());
+            data << str_vector << "\n";
+        }
+
+        cout << "File saved! Happy cooking!\n";
+        data.close();
     }
 
     int database::binary_search_time(vector<recipe_time> r, int low, int high, int key){
@@ -122,8 +154,8 @@ using namespace std;
     database::database() {}
 
     database::database(const database& orig)
-    :recipe_box(orig.recipe_box), recipe_box_name(orig.recipe_box_name), 
-    recipe_box_time(orig.recipe_box_time), file(orig.file) 
+    :recipe_box(orig.recipe_box), rb_by_name(orig.rb_by_name), 
+    rb_by_time(orig.rb_by_time), file(orig.file) 
     {}
 
     database::database(vector<recipe> recipes)
@@ -138,11 +170,11 @@ using namespace std;
    
 
     database::~database() {}
-/*
+
     recipe database::get(int i) const{
         return recipe_box.at(i);
     }
-
+/*
     recipe database::get_from_time(int i) const{
         int j;
         for (j = 0; j < recipe_box.size(); j++){
@@ -344,15 +376,77 @@ using namespace std;
     }
    */
 
-    /*void database::add_by_name(recipe r){
 
-    }
 
+    // void binary_insert_name(recipe r){
+    //     int index;
+        
+        
+    // }
+
+    // void database::add_by_name(recipe r){
+    //     cout <<r;
+    //     //binary_insert_name(rb_by_name, r);
+    // }
+/*
     void database::add_by_time(recipe r){
         
     }
 */
+    
+    // adjusts the index for binary search to return where it actually needs to be inserted
+    int adjust_index(vector<recipe*> rb, int index, string key){
+        int true_index = index;
+
+        // if the name at the found index matches key, adjust for repeats
+        if(rb[index]->get_name() == key){
+            while(rb[++index]->get_name() == key){
+                index++;
+            }
+        // if the name at the found index does not match key, move it back one space
+        }else{
+            true_index--;
+        }
+
+        return true_index;
+    }
+
+    // TWO CASES:
+    // Either a name that doesn't exist is passed through.
+    //      Index returned will be one greater than it needs to be
+    // A name that does exist is passed through
+    //      if name doesn't exist more than once it will be the correct index
+    //      if name does exist more than once, it will be in the middle
+    int binary_search_name(vector<recipe*> rb, int low, int high, string key){
+        int mid;
+        
+        if(low == high)
+            return low;
+
+        mid = low + ((high - low) / 2);
+
+        if (key < rb[mid]->get_name())
+            return binary_search_name(rb, low, mid, key);
+
+        else if (key > rb[mid]->get_name())
+            return binary_search_name(rb, mid + 1, high, key);
+
+        else 
+            return mid;
+    }
+
     void database::add_recipe(recipe r){
         recipe_box.push_back(r);
     }
-  
+
+    vector<recipe> database::get_recipe_box() const{
+        return recipe_box;
+    }
+
+    vector<recipe*> database::get_rb_by_name() const{
+        return rb_by_name;
+    }
+    
+    vector<recipe*> database::get_rb_by_time() const{
+        return rb_by_time;
+    }

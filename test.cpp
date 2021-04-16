@@ -13,7 +13,7 @@ using namespace std;
 /************************* DATABASE INFO ****************************/
 recipe test0(   " ",
                 " ",
-                0,
+                1,
                 "snack",
                 {},
                 {"n/a"});
@@ -41,7 +41,7 @@ recipe test3(   " mojito",
 
 recipe test4(   "nachos ",
                 "https://www.allrecipes.com/recipe/chip/",
-                0,
+                10,
                 "snack",
                 {"chips", "cheese"},
                 {"vegetarian"}); 
@@ -75,10 +75,6 @@ vector<recipe> recipes = {test0, test1, test2, test3, test4, test5, test6, test7
 
 database test_database(recipes);
 
-void binary_search_name_test(){
-    
-}
-
 /**************************TEST FUNCTIONS******************************/
 
 // calls test functions for menu class
@@ -96,10 +92,12 @@ void database_tests(){
     database_copy_constructor_test();
     database_vector_constructor_test();
     seperate_list_test();
-    //database_file_constructor_test();
+    database_file_constructor_test();
 
     save_file_test();
-    //binary_search_name_test();
+    save_to_file_test();
+    binary_search_name_test();
+
 
     cout << "All database class tests passed! \n";
 }
@@ -155,6 +153,15 @@ void database_file_constructor_test(){
     cout << "Testing file database constructor: ";
 
     database test("test.txt");
+    database test0("my_recipes.txt");
+    for (int i = 0; i < recipes.size(); i++){
+        assert(test0.get(i).get_name() == recipes[i].get_name());
+        assert(test0.get(i).get_url() == recipes[i].get_url());
+        assert(test0.get(i).get_time() == recipes[i].get_time());
+        assert(test0.get(i).get_meal() == recipes[i].get_meal());
+        assert(test0.get(i).get_ingreds() == recipes[i].get_ingreds());
+        assert(test0.get(i).get_diets() == recipes[i].get_diets());
+    }
 
     cout << "PASSED \n";
 }
@@ -164,6 +171,14 @@ void database_vector_constructor_test(){
     cout << "Testing vector database constructor: ";
 
     database test(recipes);
+    for (int i = 0; i < recipes.size(); i++){
+        assert(test.get(i).get_name() == recipes[i].get_name());
+        assert(test.get(i).get_url() == recipes[i].get_url());
+        assert(test.get(i).get_time() == recipes[i].get_time());
+        assert(test.get(i).get_meal() == recipes[i].get_meal());
+        assert(test.get(i).get_ingreds() == recipes[i].get_ingreds());
+        assert(test.get(i).get_diets() == recipes[i].get_diets());
+    }
 
     cout << "PASSED \n";
 }
@@ -172,6 +187,14 @@ void database_copy_constructor_test(){
     cout << "Testing copy database constructor: ";
 
     database test(test_database);
+    for (int i = 0; i < recipes.size(); i++){
+        assert(test.get(i).get_name() == recipes[i].get_name());
+        assert(test.get(i).get_url() == recipes[i].get_url());
+        assert(test.get(i).get_time() == recipes[i].get_time());
+        assert(test.get(i).get_meal() == recipes[i].get_meal());
+        assert(test.get(i).get_ingreds() == recipes[i].get_ingreds());
+        assert(test.get(i).get_diets() == recipes[i].get_diets());
+    }
 
     cout << "PASSED \n";
 }
@@ -181,67 +204,84 @@ void save_file_test(){
 
     database test("test.txt");
     vector<string> list;
-    // assert(test.testing.at(0).get_name() == "nothing");
-    // assert(test.testing.at(0).get_url() == "www");
-    // assert(test.testing.at(0).get_time() == 0);
-    // assert(test.testing.at(0).get_meal() == "snack");
-    // list = {"nope"};
-    // assert(test.testing.at(0).get_ingreds() == list);
-    // list = {"n/a"};
-    // assert(test.testing.at(0).get_diets() == list);
+    assert(test.get(0).get_name() == "nothing");
+    assert(test.get(0).get_url() == "www");
+    assert(test.get(0).get_time() == 10);
+    assert(test.get(0).get_meal() == "snack");
+    list = {"nope"};
+    assert(test.get(0).get_ingreds() == list);
+    list = {"n/a"};
+    assert(test.get(0).get_diets() == list);
 
-    assert(test.testing.at(0).get_name() == "chicken soup");assert(test.testing.at(0).get_url() == "www.eatsoup.ca");
-    assert(test.testing.at(0).get_time() == 45);
-    assert(test.testing.at(0).get_meal() == "lunch");
+    assert(test.get(1).get_name() == "chicken soup");
+    assert(test.get(1).get_url() == "www.eatsoup.ca");
+    assert(test.get(1).get_time() == 45);
+    assert(test.get(1).get_meal() == "lunch");
     list = {"chicken", "broth", "celery", "carrots"};
-    assert(test.testing.at(0).get_ingreds() == list);
+    assert(test.get(1).get_ingreds() == list);
     list = {"meat", "dairy free"};
-    assert(test.testing.at(0).get_diets() == list);
+    assert(test.get(1).get_diets() == list);
 
-    assert(test.testing.at(1).get_name() == "chocolate chip cookies");
-    assert(test.testing.at(1).get_url() == "https://www.allrecipes.com/recipe/277079/cookies/");
-    assert(test.testing.at(1).get_time() == 20);
-    assert(test.testing.at(1).get_meal() == "dessert");
+    assert(test.get(2).get_name() == "chocolate chip cookies");
+    assert(test.get(2).get_url() == "https://www.allrecipes.com/recipe/277079/cookies/");
+    assert(test.get(2).get_time() == 20);
+    assert(test.get(2).get_meal() == "dessert");
     list = {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter","chocolate chips"};
-    assert(test.testing.at(1).get_ingreds() == list);
+    assert(test.get(2).get_ingreds() == list);
     list = {"vegetarian", "low-sugar"};
-    assert(test.testing.at(1).get_diets() == list);
+    assert(test.get(2).get_diets() == list);
 
     cout << "PASSED\n";
 }
 
-vector<string> eperate_list(const string& list){
-        char next_item = ',';
-        string item = "";
-        vector<string> items;
-        for (int i = 0; i < list.size(); i++){
-            if (list.at(i) == next_item){
-                i++;
-                items.push_back(item);
-                item = "";
-                continue;
-            }
-            item += list.at(i);
-            if (i == list.size() - 1){
-                items.push_back(item);
-            }
-        }
-        return items;
-    }
+void save_to_file_test(){
+    cout << "Testing save_to_file_test(): ";
+
+    database test(recipes);
+    test.save_to_file();
+
+    cout << "PASSED\n";
+}
 
 void seperate_list_test(){
+    cout << "Testing seperate_list_test(): ";
+
     string test = "apple, banana, cucumber";
     vector<string> expected = {"apple", "banana", "cucumber"};
 
-    assert(eperate_list(test) == expected);
+    assert(seperate_list(test) == expected);
+
+    cout << "PASSED\n";
 }
 
-void add_by_name_test(){
-    
-}
+void binary_search_name_test(){
+    cout << "Testing binary_search_name_test(): ";
 
-void add_by_time_test(){
+    vector<recipe> test = recipes;
+    vector<recipe*> test_pntr_array;
 
+    for(int i = 0; i < test.size(); i++){
+        test_pntr_array.push_back(&test[i]);
+    }
+
+    // for(int i = 0; i < test.size(); i++){
+    //     cout << "Actual array: " << test[i].get_name() << "\n";
+    //     cout << "Pointer array: " << test_pntr_array[i]->get_name() << "\n";
+    // }
+
+    int notInDatabase = binary_search_name(test_pntr_array, 0, test_pntr_array.size(), "chicken");
+    int inDatabase = binary_search_name(test_pntr_array, 0, test_pntr_array.size(), "chicken soup");
+
+    assert(notInDatabase == 1);
+    assert(inDatabase == 1);
+
+    notInDatabase = adjust_index(test_pntr_array, notInDatabase, "chicken");
+    inDatabase = adjust_index(test_pntr_array, inDatabase, "chicken soup");
+
+    assert(notInDatabase == 0);
+    assert(inDatabase == 1);
+
+    cout << "PASSED\n";
 }
 
 /****************************RECIPE TEST FUNCTIONS****************************/
@@ -250,7 +290,8 @@ void add_by_time_test(){
 void recipe_dflt_constructor_test(){
     cout << "Testing default recipe constructor: ";
 
-    recipe test(); 
+    recipe test();
+
 
     cout <<  "PASSED\n";
 }

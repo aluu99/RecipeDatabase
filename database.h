@@ -18,19 +18,20 @@ struct recipe_time{
 class database {
 private:
     vector<recipe> recipe_box;
-    vector<recipe*> recipe_box_name;
-    vector<recipe*> recipe_box_time;
-    string file;
-    vector<string> seperate_list(const string& list);
-    void save_file();
+    vector<recipe*> rb_by_name;
+    vector<recipe*> rb_by_time;
+    string file = "my_recipes.txt";
     
+    void save_file();
+    string vector_to_string(const vector<string> list);
+
     void add_by_num(const recipe r);
     //void add_by_time(const recipe r);
+    
     
     int binary_search_time(vector<recipe_time> r, int low, int high, int key);
 
 public:
-    vector<recipe> testing;
     database();
     database(vector<recipe> recipes);
     database(const database& orig);
@@ -60,7 +61,14 @@ public:
     void print_recipe_name(int i);
     void print_recipe_whole(int i);
     //void read_file(string f);
+
+    vector<recipe> get_recipe_box() const;
+    vector<recipe*> get_rb_by_name() const;
+    vector<recipe*> get_rb_by_time() const;
+    void save_to_file();
 };
 
+vector<string> seperate_list(const string& list);
+int binary_search_name(vector<recipe*> rb, int low, int high, string key);
 
 #endif
