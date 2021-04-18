@@ -27,8 +27,16 @@ void add_by_name_test();
 void add_by_time_test();
 void seperate_list_test();
 void binary_search_name_test();
+void binary_search_time_test();
+void add_by_name_test();
+void add_by_time_test();
+void add_recipe_test();
+void delete_recipe_test();
+
+void is_url_test();
 
 // Recipe Tests
+bool operator==(recipe a, recipe b);
 void recipe_dflt_constructor_test();
 void recipe_reg_constructor_test();
 void recipe_copy_constructor_test();
@@ -57,7 +65,5 @@ void delete_ingred_test();
 
 void add_diet_test();
 void delete_diet_test();
-
-int adjust_index(vector<recipe*> rb, int index, string key);
 
 #endif

@@ -10,11 +10,21 @@ using namespace std;
 
     menu::menu()
     :page(home), last_page(home){
+        //cout << box.get(0).get_name() << "\n";
         while(true){
            get_user_choice();
            process_choice();
         }
     }
+
+    // menu::menu(database* box)
+    // :page(home), last_page(home), box(box){
+    //     cout << box->get(0).get_name() << "\n";
+    //     while(true){
+    //        get_user_choice();
+    //        process_choice();
+    //     }
+    // }
 
     menu::~menu() {}
 
@@ -26,13 +36,46 @@ using namespace std;
         }
     }
 
+    void menu::display_choices(vector<string> choices){
+        for(int i = 0; i < choices.size(); i++){
+            cout << "(" << i + 1 << ") ";
+            cout << choices[i] << "\n";
+        }
+    }
+
+    // int menu::get_valid_num_inp(int low, int high, bool & valid_input){
+    //     int chosen;
+        
+    //     while(!valid_input){
+    //         cout << "Enter your choice: ";
+    //         cin >> chosen;
+
+    //         if(cin.fail() || !is_int(chosen)){
+    //             // Reference for handling incorrect data types:
+    //             // https://stackoverflow.com/questions/18728754/checking-cin-input-stream-produces-an-integer 
+    //             // if input is not a number or is not an integer
+    //             cout << "Incorrect input. Please try again. \n";
+    //             cin.clear();
+    //             cin.ignore(256, '\n');
+    //             continue;
+    //         }
+            
+    //         if(chosen >= low && chosen <= high){
+    //                 valid_input = true;
+    //         }
+
+    //         if(!valid_input)
+    //             // if input is an integer but not a correct input
+    //             cout << "Incorrect input. Please try again. \n";
+    //     }
+    //     return chosen;
+    // }
+
     void menu::get_user_choice(){
         double chosen;
         bool valid_input = false;
-        for(int i = 0; i < page.size(); i++){
-            cout << "(" << i + 1 << ") ";
-            cout << page[i] << "\n";
-        }
+        display_choices(page);
+
         if (page != home || page != quit){
             cout << "(0) Main Menu\n";
         }
@@ -50,7 +93,9 @@ using namespace std;
                 cin.clear();
                 cin.ignore(256, '\n');
                 continue;
-            } else if (page != home){
+            }
+            
+            if (page != home){
                 // if input is an int and we are not in the start menu
                 if(((chosen >= 1) && (chosen <= page.size())) || chosen == 0 || chosen == -1){
                     valid_input = true;
@@ -94,9 +139,12 @@ using namespace std;
                     page = find_recipe;
                     break;
                 case 3:
-                    page = list_recipes;
+                    page = find_recipe;
                     break;
                 case 4:
+                    page = list_recipes;
+                    break;
+                case 5:
                     page = quit;
                     break;
             }
@@ -133,8 +181,12 @@ using namespace std;
                     // recipe_choice = get_user_choice
                     // page = recipe_options
                     // get_user_choice
+                    box.search_recipe_name_full(recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 2:
+                    box.search_recipe_name_part(recipe_results, print_results);
+                    page = print_results;
                     break;
             }
         }else if(page == find_by_time){
@@ -198,22 +250,36 @@ using namespace std;
         }else if(page == find_by_diet){
             switch(user_choice){
                 case 1:
-                    //lists meat
+                    box.search_diet("meat",recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 2:
-                    //lists vegetarian
+                    box.search_diet("vegetarian",recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 3:
-                    //lists vegan
+                    box.search_diet("vegan",recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 4:
-                    //lists gluten-free
+                    box.search_diet("gluten-free",recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 5:
-                    //lists low-sugar
+                    box.search_diet("low-sugar",recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 6:
-                    //lists pescatarian
+                    box.search_diet("pescatarian",recipe_results, print_results);
+                    page = print_results;
+                    break;
+                case 7:
+                    box.search_diet("dairy free",recipe_results, print_results);
+                    page = print_results;
+                    break;
+                case 8:
+                    box.search_diet("n/a",recipe_results, print_results);
+                    page = print_results;
                     break;
             }
         }else if(page == list_recipes){
@@ -234,20 +300,98 @@ using namespace std;
         }else if(page == quit){
             switch(user_choice){
                 case 1: 
-                    // quit_save(); TO-DO!!!!
+                    box.save_to_file();
                     break;
             }
-        }else{
+        }else if(page == print_results){
+            recipe_choice = user_choice - 1;
+            page = recipe_options;
+        } else {
+            // page == recipe_options
             switch(user_choice){
                 case 1:
-                    // print recipe 
+                    box.print_recipe(recipe_results, recipe_choice);
+                    page = empty;
                     break;
                 case 2:
-                    //edit recipe
-                    break;
-                case 3:
-                    //delete recipe
+                    //int j = 0;
+                    // string add = reinterpret_cast<const char*>(recipe_results[recipe_choice]);
+                    // for (; j < box.size(); j++){
+                    //     if (box.get_p(j) == add){
+                    //         break;
+                    //     }
+                    // }
+                    box.delete_recipe(recipe_choice);
+                    page = empty;
                     break;
             }
         }
     }
+
+    bool is_url(string url){
+        vector<string> url_endings = {".edu", ".org", ".com", ".net", ".biz", ".info", ".gov"};
+        vector<string> url_begins = {"http://", "https://"};
+
+        bool valid_end = false;
+        bool valid_begin = false;
+
+        for(int i = 0; i < url_endings.size(); i++){
+            if(url.find(url_endings[i], 0) != -1)
+                valid_end = true;
+        }
+
+        for(int i = 0; i < url_begins.size(); i++){
+            if(url.find(url_begins[i], 0) != -1)
+                valid_begin = true;
+        }
+
+        return valid_end && valid_begin;
+    }
+
+    // void menu::add_user_recipe(){
+    //     recipe temp();
+
+    //     string name;
+    //     string url;
+    //     int time; 
+    //     string meal;
+    //     vector<string> ingreds;
+    //     vector<string> diet;
+        
+    //     cout << "Enter recipe name: ";
+    //     cin >> name;
+        
+    //     bool validUrl = false;
+        
+    //     while(!validUrl){
+    //         cout << "Copy and paste recipe url: ";
+    //         cin >> url;
+            
+    //         validUrl = is_url(url);
+            
+    //         if(!validUrl){
+    //             cout << "URL is invalid. Please try copy and paste URL exactly. \n";
+    //         }
+    //     }
+
+    //     bool validTime = false;
+
+    //         while(!validTime){
+    //             cout << "Please enter time recipe (in minutes): ";
+    //             cin >> time;
+                
+    //             if(cin.fail() || time < 0){
+    //                 cout << "Time input is invalid. Please try again. \n";
+
+    //                 cin.clear();
+    //                 cin.ignore(256, '\n');
+    //             }
+    //         }
+
+    //     bool validMeal = false;
+    //         display_choices(meal_options);
+            
+    //         while(!validMeal){
+                
+    //         }
+    // }

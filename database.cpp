@@ -5,6 +5,7 @@
 #include "recipe.h"
 #include <ncurses.h>
 #include <fstream>
+#include <regex>
 
 using namespace std;
 
@@ -46,6 +47,10 @@ using namespace std;
 
     void database::save_file(){
         ifstream data(file);
+        if (data.fail()){
+            cout << "File failed to open.\n";
+            return;
+        }
         int field = 0;
         recipe temp;
 
@@ -76,13 +81,18 @@ using namespace std;
                 // Diet
                 vector<string> list = seperate_list(input);
                 temp.set_diets(list);
-                add_recipe(temp);
+                recipe_box.push_back(temp);
                 field = 0;
                 continue;
             }
             field++;            
         }
         data.close();
+
+        for(int i = 0; i < recipe_box.size(); i++){
+            add_by_name(recipe_box[i]);
+            add_by_time(recipe_box[i]);
+        }
     }
 
     string database::vector_to_string(const vector<string> list){
@@ -116,42 +126,9 @@ using namespace std;
         data.close();
     }
 
-    int database::binary_search_time(vector<recipe_time> r, int low, int high, int key){
-        int mid;
-
-        if(low == high)
-            return low;
-
-        mid = low + ((high - low) / 2);
-
-        if (key > r[mid].time)
-            return binary_search_time(r, mid + 1, high, key);
-        else if (key < r[mid].time)
-            return binary_search_time(r, low, mid, key);
-        else
-            return mid;
+    database::database() {
+        save_file();
     }
-/*
-    void database::add_by_name(const recipe r){
-        int correct_i;
-        
-        correct_i = binary_search_name(recipe_box, 0, recipe_box.size(), r.get_name());
-        //recipe_box.insert(recipe_box.begin() + correct_i, r);
-    }
-
-    
-    void database::add_by_time(const recipe r){
-        int correct_i;
-        recipe_time temp;
-        //int time = ;
-        int id = r.get_id();
-        temp.time = r.get_time();
-        temp.id = id;
-        correct_i = binary_search_time(recipe_box_time, 0, recipe_box_time.size(), temp.time);
-        recipe_box_time.insert(recipe_box_time.begin() + correct_i, temp); //TODO: ensure working correctly
-    }
-  */  
-    database::database() {}
 
     database::database(const database& orig)
     :recipe_box(orig.recipe_box), rb_by_name(orig.rb_by_name), 
@@ -160,76 +137,133 @@ using namespace std;
 
     database::database(vector<recipe> recipes)
     :recipe_box(recipes) 
-    {}
+    {
+        for(int i = 0; i < recipe_box.size(); i++){
+            add_by_name(recipe_box[i]);
+        }
+        for(int i = 0; i < recipe_box.size(); i++){
+            add_by_time(recipe_box[i]);
+        }
+    }
     
     database::database(string file_name)
     : file(file_name) {
         save_file();
     }
 
-   
-
     database::~database() {}
 
     recipe database::get(int i) const{
         return recipe_box.at(i);
     }
-/*
-    recipe database::get_from_time(int i) const{
-        int j;
-        for (j = 0; j < recipe_box.size(); j++){
-            if (recipe_box_time[i].id == recipe_box.at(j).get_id()){
-                break;
-            }
-            if (j >= recipe_box.size()){
-                cmpt::error("Error: This recipe does exist in your box.");
+
+    // string database::get_p(int i) const{
+    //     string add = reinterpret_cast<const char*>(&(recipe_box.at(i)));
+    //     return add;
+    // }
+
+    // int database::get_idx(recipe* r){
+    //     for (int i = 0; i < recipe_box.size(); i++){
+    //         if(&(recipe_box.at(i)) == r){
+    //             return i;
+    //         }
+    //     }
+    //     return -1;
+    // }
+    
+    template<typename T>
+    int linear_search(const vector<T>& v, const T key){
+        int i = 0;
+        for (i = 0; i < v.size(); i++){
+            if (v[i] == key){
+                return i;
             }
         }
-        
-        return recipe_box.at(j);
+        return -1;
     }
 
-    vector<search_result> database::search_recipe_name_full(string s) const{
-        vector<search_result> search_results;
-        int results = 0;
+    void database::delete_recipe(int i){
+        
+        recipe* r = &(recipe_box.at(i));
+        int idx = linear_search(rb_by_name, r);
+        recipe_box.erase(recipe_box.begin() + i);
+        if (idx == -1){
+            cout << "Recipe cannot be deleted because it has no address.\n";
+            return;
+        }
+        rb_by_name.erase(rb_by_name.begin()+idx);
+        idx = linear_search(rb_by_time, r);
+        if (idx == -1){
+            cout << "Recipe cannot be deleted because it has no address.\n";
+            return;
+        }
+        rb_by_time.erase(rb_by_time.begin()+idx);
+    }
+
+    int database::size() const{
+        return recipe_box.size();
+    }
+
+    void database::print_recipe(vector<recipe*>& r,int i){
+        r[i]->print();
+    }
+    
+   void database::search_recipe_name_full(vector<recipe*>& results, vector<string>& print){
+        string s = "";
+        results.clear();
+        print.clear();
+        cin.clear();
+        cin.ignore(256,'\n');
+        cout << "Enter exact name to search: ";
+        getline(cin, s);
+
         for (int i = 0; i < recipe_box.size(); i++){
             if (recipe_box.at(i).get_name() == s){
-                results++;
-                search_results.push_back({recipe_box.at(i).get_name(),i,results});
+                results.push_back(&(recipe_box.at(i)));
+                string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+                print.push_back(info);
             }
         }
-        return search_results;
     }
 
-    vector<search_result> database::search_recipe_name_part(string s) const{
-        vector<search_result> search_results;
-        int results = 0;
+    void database::search_recipe_name_part(vector<recipe*>& results, vector<string>& print){
+        string s = "";
+        results.clear();
+        print.clear();
+        cin.clear();
+        cin.ignore(256,'\n');
+        cout << "Enter keyword to search: ";
+        getline(cin, s);
+
         for (int i = 0; i < recipe_box.size(); i++){
             string name = recipe_box.at(i).get_name();
             if (name.find(s) != std::string::npos){
-                results++;
-                search_results.push_back({recipe_box.at(i).get_name(),i,results});
+                results.push_back(&(recipe_box.at(i)));
+                string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+                print.push_back(info);
             }
         }
-        return search_results;
     }
 
-    vector<search_result> database::search_recipe_diet_full(string s) const{
-        vector<search_result> search_results;
-        int results = 0;
-        for (int i = 0; i < recipe_box.size(); i++){
-            vector<string> diets = recipe_box.at(i).get_diets();
-            for (int j = 0; j < diets.size(); i++){
-                if (diets.at(j) == s){
-                    results++;
-                    search_results.push_back({recipe_box.at(i).get_name(),i,results});
-                    break;
-                }
-            }
-        }
-        return search_results;
+    void database::search_diet(const string s, vector<recipe*>& results, vector<string>& print){
+        results.clear();
+        //print.clear();
+        cin.clear();
+        cin.ignore(256,'\n');
+        
+        //for (int i = 0; i < recipe_box.size(); i++){
+            //for (int j = 0; j < recipe_box.at(i).get_num_diets(); i++){
+                cout << s << print.at(0);
+                // if (recipe_box.at(i).get_diet(j) == s){
+                //     // results.push_back(&(recipe_box.at(i)));
+                //     // string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+                //     // print.push_back(info);
+                //     break;
+                // }
+            //}
+        //}
     }
-
+/*
     vector<search_result> database::search_recipe_diet_part(string s) const{
         vector<search_result> search_results;
         int results = 0;
@@ -337,17 +371,6 @@ using namespace std;
         return search_results;
     }
 
-
-
-    void database::delete_recipe(int i){
-        //recipe_box.erase(recipe_box.begin() + i);
-        for (int j = 0; j < recipe_box_time.size(); j++){
-            if (recipe_box_time.at(j).id == recipe_box[i].get_id()){
-                recipe_box_time.erase(recipe_box_time.begin() + j);
-            }
-        }
-    }
-
     void database::edit_recipe(int i){
         // TODO!!!!
         
@@ -384,39 +407,40 @@ using namespace std;
         
     // }
 
-    // void database::add_by_name(recipe r){
-    //     cout <<r;
-    //     //binary_insert_name(rb_by_name, r);
-    // }
-/*
-    void database::add_by_time(recipe r){
+    void database::add_by_name(recipe& r){
+        int binary_search_index = binary_search_name(rb_by_name, 0, rb_by_name.size(), r.get_name());
         
+        recipe* to_r = &r;
+        rb_by_name.insert(rb_by_name.begin() + binary_search_index, to_r);//   
+     
+          //cout << correct_index;
+  }
+    void database::add_by_time(recipe& r){
+        int binary_search_index = binary_search_time(rb_by_time, 0, rb_by_time.size(), r.get_time());
+
+        // cout << r.get_name();
+        recipe* to_r = &r;        
+        rb_by_time.insert(rb_by_time.begin() + binary_search_index, to_r);
     }
-*/
-    
-    // adjusts the index for binary search to return where it actually needs to be inserted
-    int adjust_index(vector<recipe*> rb, int index, string key){
-        int true_index = index;
+ 
 
-        // if the name at the found index matches key, adjust for repeats
-        if(rb[index]->get_name() == key){
-            while(rb[++index]->get_name() == key){
-                index++;
-            }
-        // if the name at the found index does not match key, move it back one space
-        }else{
-            true_index--;
-        }
+    int binary_search_time(vector<recipe*> rb, int low, int high, int key){
+            int mid;
+        
+        if(low == high)
+            return low;
 
-        return true_index;
-    }
+        mid = low + ((high - low) / 2);
 
-    // TWO CASES:
-    // Either a name that doesn't exist is passed through.
-    //      Index returned will be one greater than it needs to be
-    // A name that does exist is passed through
-    //      if name doesn't exist more than once it will be the correct index
-    //      if name does exist more than once, it will be in the middle
+        if (key < rb[mid]->get_time())
+            return binary_search_time(rb, low, mid, key);
+
+        else if (key > rb[mid]->get_time())
+            return binary_search_time(rb, mid + 1, high, key);
+
+        else 
+            return mid;
+    }    
     int binary_search_name(vector<recipe*> rb, int low, int high, string key){
         int mid;
         
@@ -437,6 +461,9 @@ using namespace std;
 
     void database::add_recipe(recipe r){
         recipe_box.push_back(r);
+        add_by_name(recipe_box[recipe_box.size()-1]);
+        
+        add_by_time(recipe_box[recipe_box.size()-1]);
     }
 
     vector<recipe> database::get_recipe_box() const{
@@ -450,3 +477,17 @@ using namespace std;
     vector<recipe*> database::get_rb_by_time() const{
         return rb_by_time;
     }
+
+    recipe* database::get_rb_by_name_elem(int i) const{
+        return rb_by_name.at(i);
+    }
+    
+    recipe* database::get_rb_by_time_elem(int i) const{
+        return rb_by_time.at(i);
+    }
+    
+    
+
+
+
+

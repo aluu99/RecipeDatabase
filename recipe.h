@@ -16,13 +16,11 @@ private:
     vector<string> ingreds;
     vector<string> diet;
 
-    const vector<string> meal_options = {"breakfast", "lunch", "dinner", "snack", "drink", "dessert"};
-    const vector<string> diet_options = {"meat", "vegetarian", "vegan", "gluten-free", "low-sugar", "pescatarian", "dairy free", "n/a"};
-
 public:
     recipe();
     recipe(string n, string url, int t, string m, vector<string> i, vector<string> d);
     recipe(const recipe& other);
+    recipe& operator=(const recipe& r);
 
     ~recipe();
 
@@ -57,3 +55,4 @@ public:
 
 
 #endif
+        

@@ -21,6 +21,16 @@ using namespace std;
         
     }
 
+    recipe& recipe::operator=(const recipe& r){
+        set_name(r.get_name());
+        set_url(r.get_url());
+        set_time(r.get_time());
+        set_meal(r.get_meal());
+        set_ingreds(r.get_ingreds());
+        set_diets(r.get_diets());
+        return *this;
+    }
+
     /***************************METHODS*********************/
 
     // GETTER METHODS
@@ -75,7 +85,7 @@ using namespace std;
     }
 
     void recipe::set_time(int t){
-        if(t <= 0){
+        if(t < 0){
             cmpt::error("Invalid time amount passed.");
         }
 
