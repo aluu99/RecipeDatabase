@@ -5,6 +5,7 @@
 #include <vector>
 #include "cmpt_error.h"
 
+
 using namespace std;
 
 class recipe {
@@ -46,15 +47,6 @@ public:
     void set_meal(string s);
     void set_ingreds(vector<string> recipes);
     void set_diets(vector<string> d);
-    
-    // // Edit Ingredients
-    // void add_ingred(string i);
-    // void change_ingred(int i, string s);
-    // void delete_ingred(int index);
-    
-    // // Edit Diets
-    // void add_diet(string d);
-    // void delete_diet(int index);
 
     // Print recipe info
     void print() const;

@@ -52,3 +52,15 @@ https://e.ca
 lunch
 , bread
 vegetarian, vegan, gluten-free, low-sugar, pescatarian
+soup
+http://.ca
+38
+lunch
+, ingreds
+meat
+burger
+https://burger.com
+12
+dinner
+, burger
+meat

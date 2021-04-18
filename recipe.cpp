@@ -1,8 +1,6 @@
 #include "recipe.h"
 #include "database.h"
-#include "cmpt_error.h"
-#include <iostream>
-#include <vector>
+
 
 using namespace std;
 
@@ -117,36 +115,8 @@ using namespace std;
         diet = d;
     }
 
-    // // OTHER METHODS
-
-    // // Edit Ingredients
-    // void recipe::add_ingred(string s){
-    //     ingreds.push_back(s);
-    // }
-
-    // void recipe::change_ingred(int i, string s){
-    //     ingreds.at(i) = s;
-    // }
-
-    // void recipe::delete_ingred(int index){
-    //     ingreds.erase(ingreds.begin() + index);
-    // }
-
-    // // Edit Diets
-    // void recipe::add_diet(string d){
-    //     // if n/a is chosen, we erase all other diets
-    //     if(d == "n/a"){
-    //         diet.clear();
-    //     }
-    //     diet.push_back(d);
-    // }
-
-    // void recipe::delete_diet(int index){
-    //     diet.erase(diet.begin() + index);
-    // }
-
     // Print Recipe Info
-
+    
     void recipe::print() const{
         cout << "Name: " << name << "\n";
         cout << "URL: " << url << "\n";

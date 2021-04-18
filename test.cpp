@@ -4,7 +4,6 @@
 #include "cmpt_error.h"
 #include "database.h"
 #include "recipe.h"
-#include "menu.h"
 #include "test.h"
 #include <cmath>
 
@@ -29,7 +28,8 @@ recipe test2(   "chocolate chip cookies",
                 "https://www.allrecipes.com/recipe/277079/cookies/",
                 20,
                 "dessert",
-                {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter","chocolate chips"},
+                {"milk", "egg yolks", "vanilla extract", "flour", 
+                    "sugar", "salt", "butter","chocolate chips"},
                 {"vegetarian", "low-sugar"});
                 
 recipe test3(   " mojito",
@@ -47,61 +47,52 @@ recipe test4(   "nachos ",
                 {"vegetarian"}); 
 
 recipe test5(   "shepherd's pie",
-                "https://www.allrecipes.com/recipe/277079/sweet-potato-and-venison-shepherds-pie/",
+                "https://www.allrecipes.com/recipe/277079/shepherds-pie/",
                 170,
                 "dinner",
-                {"potato", "butter", "milk", "salt", "black pepper", "dried sage", "nutmeg", "cheese"},
+                {"potato", "butter", "milk", "salt", "black pepper", 
+                 "dried sage", "nutmeg", "cheese"},
                 {"pescatarian"});
                 
 recipe test6(   "vanilla crepes",
                 "https://www.allrecipes.com/recipe/95817/vanilla-crepes/",
                 30,
                 "breakfast",
-                {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter"},
+                {"milk", "egg yolks", "vanilla extract", "flour", 
+                "sugar", "salt", "butter"},
                 {"n/a"}); 
 
 recipe test7(   "apple pie",
                 "https://www.allrecipes.com/recipe/95817/pie/",
                 120,
                 "dessert",
-                {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter", "apples"},
+                {"milk", "egg yolks", "vanilla extract", "flour", "sugar", 
+                 "salt", "butter", "apples"},
                 {"gluten-free"});
 
 // recipes sorted by name in alpha order
 vector<recipe> recipes = {test0, test1, test2, test3, test4, test5, test6, test7};
 
-// // recipes sorted by time in ascending order
-// vector<recipe> by_time = {test0, test4, test3, test2, test6, test1, test5};
-
 database test_database(recipes);
 
 /**************************TEST FUNCTIONS******************************/
-
-// calls test functions for menu class
-void menu_tests(){
-   cout << "Testing menu class tests ... \n";
-   menu test;
-   cout << "All menu class tests passed! \n";
-}
 
 // calls test functions for database class
 void database_tests(){
     cout << "Testing database class tests ... \n";
     
-    // database_dflt_constructor_test();
-    // database_copy_constructor_test();
-    // database_vector_constructor_test();
-    // seperate_list_test();
-    // add_recipe_test();
-    // database_file_constructor_test();
+    database_dflt_constructor_test();
+    database_copy_constructor_test();
+    database_vector_constructor_test();
+    database_file_constructor_test();
 
-    // save_file_test();
-    // save_to_file_test();
-    // binary_search_name_test();
-    // add_by_name_test();
+    read_file_test();
+    save_to_file_test();
+    seperate_list_test();
+    binary_search_name_test();
+    binary_search_time_test();
+    add_recipe_test();
     delete_recipe_test();
-    // binary_search_time_test();
-    // add_by_time_test();
     add_recipe_test();
 
     cout << "All database class tests passed! \n";
@@ -114,6 +105,7 @@ void recipe_tests(){
     recipe_dflt_constructor_test();
     recipe_reg_constructor_test();
     recipe_copy_constructor_test();
+
     get_name_test();
     get_url_test();
     get_time_test();
@@ -124,17 +116,13 @@ void recipe_tests(){
     get_diets_test();
     get_diet_test();
     get_num_diets_test();
+
     set_name_test();
     set_url_test();
     set_time_test();
     set_meal_test();
     set_ingreds_test();
     set_diets_test();
-    // add_ingred_test();
-    // change_ingred_test();
-    // delete_ingred_test();
-    // add_diet_test();
-    // delete_diet_test();
     test1.print();
 
     cout << "All recipe class tests passed! \n";
@@ -154,23 +142,21 @@ void database_dflt_constructor_test(){
     cout << "PASSED\n";
 }
 
-void database_file_constructor_test(){
-    cout << "Testing file database constructor: ";
+void database_copy_constructor_test(){
+    cout << "Testing copy database constructor: ";
 
-    database test("test.txt");
-    database test0("my_recipes.txt");
-    for (int i = 0; i < test0.size(); i++){
-        assert(test0.get(i).get_name() == recipes[i].get_name());
-        assert(test0.get(i).get_url() == recipes[i].get_url());
-        assert(test0.get(i).get_time() == recipes[i].get_time());
-        assert(test0.get(i).get_meal() == recipes[i].get_meal());
-        assert(test0.get(i).get_ingreds() == recipes[i].get_ingreds());
-        assert(test0.get(i).get_diets() == recipes[i].get_diets());
+    database test(test_database);
+    for (int i = 0; i < recipes.size(); i++){
+        assert(test.get(i).get_name() == recipes[i].get_name());
+        assert(test.get(i).get_url() == recipes[i].get_url());
+        assert(test.get(i).get_time() == recipes[i].get_time());
+        assert(test.get(i).get_meal() == recipes[i].get_meal());
+        assert(test.get(i).get_ingreds() == recipes[i].get_ingreds());
+        assert(test.get(i).get_diets() == recipes[i].get_diets());
     }
 
     cout << "PASSED \n";
 }
-
 
 void database_vector_constructor_test(){
     cout << "Testing vector database constructor: ";
@@ -189,27 +175,27 @@ void database_vector_constructor_test(){
     cout << "PASSED \n";
 }
 
-void database_copy_constructor_test(){
-    cout << "Testing copy database constructor: ";
+void database_file_constructor_test(){
+    cout << "Testing file database constructor: ";
 
-    database test(test_database);
-    for (int i = 0; i < recipes.size(); i++){
-        assert(test.get(i).get_name() == recipes[i].get_name());
-        assert(test.get(i).get_url() == recipes[i].get_url());
-        assert(test.get(i).get_time() == recipes[i].get_time());
-        assert(test.get(i).get_meal() == recipes[i].get_meal());
-        assert(test.get(i).get_ingreds() == recipes[i].get_ingreds());
-        assert(test.get(i).get_diets() == recipes[i].get_diets());
+    database test("test.txt");
+    database test0("my_recipes.txt");
+    for (int i = 0; i < test0.size(); i++){
+        assert(test0.get(i).get_name() == recipes[i].get_name());
+        assert(test0.get(i).get_url() == recipes[i].get_url());
+        assert(test0.get(i).get_time() == recipes[i].get_time());
+        assert(test0.get(i).get_meal() == recipes[i].get_meal());
+        assert(test0.get(i).get_ingreds() == recipes[i].get_ingreds());
+        assert(test0.get(i).get_diets() == recipes[i].get_diets());
     }
 
     cout << "PASSED \n";
 }
 
-
 // METHOD TESTS
 
-void save_file_test(){
-    cout << "Testing save_file_test(): ";
+void read_file_test(){
+    cout << "Testing read_file_test(): ";
 
     database test("test.txt");
     vector<string> list;
@@ -235,7 +221,8 @@ void save_file_test(){
     assert(test.get(2).get_url() == "https://www.allrecipes.com/recipe/277079/cookies/");
     assert(test.get(2).get_time() == 20);
     assert(test.get(2).get_meal() == "dessert");
-    list = {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter","chocolate chips"};
+    list = {"milk", "egg yolks", "vanilla extract", "flour", 
+            "sugar", "salt", "butter","chocolate chips"};
     assert(test.get(2).get_ingreds() == list);
     list = {"vegetarian", "low-sugar"};
     assert(test.get(2).get_diets() == list);
@@ -267,14 +254,14 @@ void binary_search_name_test(){
     cout << "Testing binary_search_name_test(): ";
 
     vector<recipe> test = recipes;
-    vector<recipe*> test_pntr_array;
+    vector<recipe*> pntr_array;
 
     for(int i = 0; i < test.size(); i++){
-        test_pntr_array.push_back(&test[i]);
+        pntr_array.push_back(&test[i]);
     }
 
-    int notInDatabase = binary_search_name(test_pntr_array, 0, test_pntr_array.size(), "chicken");
-    int inDatabase = binary_search_name(test_pntr_array, 0, test_pntr_array.size(), "chicken soup");
+    int notInDatabase = binary_search_name(pntr_array, 0, pntr_array.size(), "chicken");
+    int inDatabase = binary_search_name(pntr_array, 0, pntr_array.size(), "chicken soup");
 
     assert(notInDatabase == 1);
     assert(inDatabase == 1);
@@ -303,7 +290,8 @@ void binary_search_time_test(){
                 "https://www.allrecipes.com/recipe/277079/cookies/",
                 20,
                 "dessert",
-                {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter","chocolate chips"},
+                {"milk", "egg yolks", "vanilla extract", "flour", 
+                 "sugar", "salt", "butter","chocolate chips"},
                 {"vegetarian", "low-sugar"});
 
     vector<recipe> test = {one_min, twenty_min, forty_five_min};
@@ -318,71 +306,6 @@ void binary_search_time_test(){
 
     assert(inDatabase == 1);
     assert(notInDatabase == 1);
-
-    cout << "PASSED\n";
-}
-
-void add_by_name_test(){
-    cout << "Testing add_by_name_test(): ";
-
-    database test(test_database);
-
-    recipe chicken(     "chicken",
-                        "www.chicken.com",
-                        10,
-                        "dinner",
-                        {"chicken", "soy sauce"},
-                        {"n/a"});
-
-    test.add_by_name(chicken);
-    
-    assert(test.get_rb_by_name()[3]->get_name() == chicken.get_name());
-
-    cout << "PASSED\n";
-}
-
-void add_by_time_test(){
-    cout << "Testing add_by_time_test(): ";
-
-    recipe one_min(   " ",
-                " ",
-                1,
-                "snack",
-                {},
-                {"n/a"});
-
-    recipe forty_five_min(   "chicken soup",
-                "www.eatsoup.ca",
-                45,
-                "lunch",
-                {"chicken", "broth", "celery", "carrots"},
-                {"meat", "dairy free"});
-                
-    recipe twenty_min(   "chocolate chip cookies",
-                "https://www.allrecipes.com/recipe/277079/cookies/",
-                20,
-                "dessert",
-                {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter","chocolate chips"},
-                {"vegetarian", "low-sugar"});
-
-    vector<recipe> test_box = {one_min, twenty_min, forty_five_min};
-    database test(test_box);
-
-    recipe thirty_min(   "chocolate chip cookies",
-                "https://www.allrecipes.com/recipe/277079/cookies/",
-                30,
-                "dessert",
-                {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter","chocolate chips"},
-                {"vegetarian", "low-sugar"});
-
-    test.add_by_time(thirty_min);
-
-    //cout << "Address: " << &test.get_recipe_box()[0];
-    
-    assert(test.get_rb_by_time()[0]->get_time() == one_min.get_time());
-    assert(test.get_rb_by_time()[1]->get_time() == twenty_min.get_time());
-    assert(test.get_rb_by_time()[2]->get_time() == thirty_min.get_time());
-    assert(test.get_rb_by_time()[3]->get_time() == forty_five_min.get_time());
 
     cout << "PASSED\n";
 }
@@ -408,7 +331,8 @@ void add_recipe_test(){
                 "https://www.allrecipes.com/recipe/277079/cookies/",
                 20,
                 "dessert",
-                {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter","chocolate chips"},
+                {"milk", "egg yolks", "vanilla extract", "flour", 
+                 "sugar", "salt", "butter","chocolate chips"},
                 {"vegetarian", "low-sugar"});
 
     vector<recipe> test_box = {one_min, twenty_min, forty_five_min};
@@ -418,23 +342,21 @@ void add_recipe_test(){
                 "https://www.allrecipes.com/recipe/277079/cookies/",
                 30,
                 "dessert",
-                {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter","chocolate chips"},
+                {"milk", "egg yolks", "vanilla extract", "flour", 
+                 "sugar", "salt", "butter","chocolate chips"},
                 {"vegetarian", "low-sugar"});
 
     test.add_recipe(thirty_min);
-    
-    //cout << test.get_rb_by_time()[0]->get_time() << '\n';
-    //cout << test.get_rb_by_name()[0]->get_name() << '\n';
 
-    // assert(test.get_rb_by_time()[0]->get_time() == one_min.get_time());
-    // assert(test.get_rb_by_time()[1]->get_time() == twenty_min.get_time());
-    // assert(test.get_rb_by_time()[2]->get_time() == thirty_min.get_time());
-    // assert(test.get_rb_by_time()[3]->get_time() == forty_five_min.get_time());
+    assert(test.get_rb_by_time()[0]->get_time() == one_min.get_time());
+    assert(test.get_rb_by_time()[1]->get_time() == twenty_min.get_time());
+    assert(test.get_rb_by_time()[2]->get_time() == thirty_min.get_time());
+    assert(test.get_rb_by_time()[3]->get_time() == forty_five_min.get_time());
 
     assert(test.get_rb_by_name()[0]->get_name() == one_min.get_name());
-    // assert(test.get_rb_by_name()[1]->get_name() == forty_five_min.get_name());
-    // assert(test.get_rb_by_name()[2]->get_name() == twenty_min.get_name());
-    // assert(test.get_rb_by_name()[3]->get_name() == thirty_min.get_name());
+    assert(test.get_rb_by_name()[1]->get_name() == forty_five_min.get_name());
+    assert(test.get_rb_by_name()[2]->get_name() == twenty_min.get_name());
+    assert(test.get_rb_by_name()[3]->get_name() == thirty_min.get_name());
 
     cout << "PASSED\n";
 }
@@ -476,14 +398,14 @@ void recipe_dflt_constructor_test(){
 
     recipe recipe_test();
 
-
     cout <<  "PASSED\n";
 }
 
 void recipe_reg_constructor_test(){
     cout << "Testing regular recipe constructor: ";
 
-    recipe test("name", "url", 0, "meal", {"ingred 1", "ingred 2"}, {"diet 1", "diet 2"});
+    recipe test("name", "url", 0, "meal", 
+                {"ingred 1", "ingred 2"}, {"diet 1", "diet 2"});
 
     assert(test.get_name()    == "name");
     assert(test.get_url()     == "url");
@@ -540,7 +462,7 @@ void get_url_test(){
     assert(test2.get_url() == "https://www.allrecipes.com/recipe/277079/cookies/");
     assert(test3.get_url() == "https://www.allrecipes.com/recipe/277079/slurp/");
     assert(test4.get_url() == "https://www.allrecipes.com/recipe/chip/");
-    assert(test5.get_url() == "https://www.allrecipes.com/recipe/277079/sweet-potato-and-venison-shepherds-pie/");
+    assert(test5.get_url() == "https://www.allrecipes.com/recipe/277079/shepherds-pie/");
     assert(test6.get_url() == "https://www.allrecipes.com/recipe/95817/vanilla-crepes/");
 
     cout << "PASSED. \n";
@@ -580,15 +502,18 @@ void get_ingreds_test(){
     assert(test0.get_ingreds() == expected_output);
     expected_output = {"chicken", "broth", "celery", "carrots"};
     assert(test1.get_ingreds() == expected_output);
-    expected_output = {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter","chocolate chips"};
+    expected_output = {"milk", "egg yolks", "vanilla extract", "flour", 
+                        "sugar", "salt", "butter","chocolate chips"};
     assert(test2.get_ingreds() == expected_output);
     expected_output = {"lime", "soda", "mint", "sugar", "ice", "salt"};
     assert(test3.get_ingreds() == expected_output);
     expected_output = {"chips", "cheese"};
     assert(test4.get_ingreds() == expected_output);
-    expected_output = {"potato", "butter", "milk", "salt", "black pepper", "dried sage", "nutmeg", "cheese"};
+    expected_output = {"potato", "butter", "milk", "salt", "black pepper", 
+                        "dried sage", "nutmeg", "cheese"};
     assert(test5.get_ingreds() == expected_output);
-    expected_output = {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter"};
+    expected_output = {"milk", "egg yolks", "vanilla extract", "flour", 
+                        "sugar", "salt", "butter"};
     assert(test6.get_ingreds() == expected_output);
     
     cout << "PASSED. \n";
@@ -609,15 +534,18 @@ void get_ingred_test(){
     get_ingred_helper(test0, expected_output);
     expected_output = {"chicken", "broth", "celery", "carrots"};
     get_ingred_helper(test1, expected_output);
-    expected_output = {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter","chocolate chips"};
+    expected_output = {"milk", "egg yolks", "vanilla extract", "flour", 
+                        "sugar", "salt", "butter","chocolate chips"};
     get_ingred_helper(test2, expected_output);
     expected_output = {"lime", "soda", "mint", "sugar", "ice", "salt"};
     get_ingred_helper(test3, expected_output);
     expected_output = {"chips", "cheese"};
     get_ingred_helper(test4, expected_output);
-    expected_output = {"potato", "butter", "milk", "salt", "black pepper", "dried sage", "nutmeg", "cheese"};
+    expected_output = {"potato", "butter", "milk", "salt", "black pepper", 
+                        "dried sage", "nutmeg", "cheese"};
     get_ingred_helper(test5, expected_output);
-    expected_output = {"milk", "egg yolks", "vanilla extract", "flour", "sugar", "salt", "butter"};
+    expected_output = {"milk", "egg yolks", "vanilla extract", "flour", 
+                        "sugar", "salt", "butter"};
     get_ingred_helper(test6, expected_output);
 
     cout << "PASSED. \n";
@@ -800,104 +728,3 @@ void set_diets_test(){
 
     cout << "PASSED. \n";
 }
-
-// OTHER METHOD TESTS
-
-// void add_ingred_test(){
-//     cout << "Testing add_ingred_test(): ";
-    
-//     recipe test(test0);
-//     test.add_ingred("apple");
-//     assert(test.get_ingred(test.get_num_ingreds()-1) == "apple");
-//     test.add_ingred(" b a n a n a ");
-//     assert(test.get_ingred(test.get_num_ingreds()-1) == " b a n a n a ");
-//     test.add_ingred(" ");
-//     assert(test.get_ingred(test.get_num_ingreds()-1) == " ");
-//     test.add_ingred("123-456!");
-//     assert(test.get_ingred(test.get_num_ingreds()-1) == "123-456!");
-
-//     cout << "PASSED. \n";
-// }
-
-// void change_ingred_test(){
-//     cout << "Testing change_ingred_test(): ";
-
-//     recipe test(test2);
-//     test.change_ingred(0,"apple");
-//     assert(test.get_ingred(0) == "apple");
-//     test.change_ingred(1," b a n a n a ");
-//     assert(test.get_ingred(1) == " b a n a n a ");
-//     test.change_ingred(2," b a na n a ");
-//     assert(test.get_ingred(2) == " b a na n a ");
-//     test.change_ingred(3,"avocado rind");
-//     assert(test.get_ingred(3) == "avocado rind");
-//     test.change_ingred(4,"lemon");
-//     assert(test.get_ingred(4) == "lemon");
-//     test.change_ingred(5," chicken");
-//     assert(test.get_ingred(5) == " chicken");
-//     test.change_ingred(6," seeded watermelon ");
-//     assert(test.get_ingred(6) == " seeded watermelon ");
-//     test.change_ingred(7,"5 beets");
-//     assert(test.get_ingred(7) == "5 beets");
-
-//     cout << "PASSED. \n";
-// }
-
-// void delete_ingred_test(){
-//     cout << "Testing delete_ingred_test(): ";
-    
-//     recipe test(test2);
-//     test.delete_ingred(test.get_num_ingreds());
-//     assert((test.get_num_ingreds() + 1) == test2.get_num_ingreds());
-//     test.delete_ingred(0);
-//     assert((test.get_num_ingreds() + 2) == test2.get_num_ingreds());
-//     assert(test.get_ingred(0) == test2.get_ingred(1));
-//     assert(test.get_ingred(1) == test2.get_ingred(2));
-//     assert(test.get_ingred(2) == test2.get_ingred(3));
-//     assert(test.get_ingred(3) == test2.get_ingred(4));
-//     assert(test.get_ingred(4) == test2.get_ingred(5));
-//     assert(test.get_ingred(5) == test2.get_ingred(6));
-
-//     cout << "PASSED. \n";
-// }
-
-// void add_diet_test(){
-//     cout << "Testing add_diet_test(): ";
-
-//     recipe test(test1);
-//     test.add_diet("meat");
-//     assert(test.get_diet(test.get_num_diets()-1) == "meat");
-//     test.add_diet("vegetarian");
-//     assert(test.get_diet(test.get_num_diets()-1) == "vegetarian");
-//     test.add_diet("vegetarian");
-//     assert(test.get_diet(test.get_num_diets()-1) == "vegetarian");
-//     test.add_diet("vegan");
-//     assert(test.get_diet(test.get_num_diets()-1) == "vegan");
-//     test.add_diet("gluten-free");
-//     assert(test.get_diet(test.get_num_diets()-1) == "gluten-free");
-//     test.add_diet("low-sugar");
-//     assert(test.get_diet(test.get_num_diets()-1) == "low-sugar");
-//     test.add_diet("pescatarian");
-//     assert(test.get_diet(test.get_num_diets()-1) == "pescatarian");
-//     test.add_diet("dairy free");
-//     assert(test.get_diet(test.get_num_diets()-1) == "dairy free");
-//     test.add_diet("n/a");
-//     assert(test.get_diet(test.get_num_diets()-1) == "n/a");
-//     assert(test.get_num_diets() == 1);
-
-//     cout << "PASSED. \n";
-// }
-
-// void delete_diet_test(){
-//     cout << "Testing delete_diet_test(): ";
-
-//     recipe test(test3);
-//     test.delete_diet(test.get_num_diets());
-//     assert(test.get_num_diets() + 1 == test3.get_num_diets());
-//     test.delete_diet(0);
-//     assert(test.get_num_diets() + 2 == test3.get_num_diets());
-//     assert(test.get_diet(0) == test3.get_diet(1));
-//     assert(test.get_diet(1) == test3.get_diet(2));
-
-//     cout << "PASSED. \n";
-// }

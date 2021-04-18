@@ -1,18 +1,46 @@
-#include <iostream>
-#include <vector>
-#include "cmpt_error.h"
 #include "database.h"
-#include "recipe.h"
-#include <ncurses.h>
-#include <fstream>
-#include <regex>
-#include <climits>
-#include <cmath>
 
 using namespace std;
 
+/***************************CON/DE-STRUCTORS***************************/
+
+    // Default constructor
+    database::database() {
+        read_file();
+    }
+
+    // Copy constructor
+    database::database(const database& orig)
+    :recipe_box(orig.recipe_box), rb_by_name(orig.rb_by_name), 
+    rb_by_time(orig.rb_by_time), file(orig.file) 
+    {}
+
+    // Constructor with recipe vector
+    database::database(vector<recipe> recipes)
+    :recipe_box(recipes) 
+    {
+        // Save recipe pointers alphabetically and by time
+        for(int i = 0; i < recipe_box.size(); i++){
+            add_by_name(recipe_box[i]);
+        }
+        for(int i = 0; i < recipe_box.size(); i++){
+            add_by_time(recipe_box[i]);
+        }
+    }
+    
+    // Constructor with recipe file
+    database::database(string file_name)
+    : file(file_name) {
+        read_file();
+    }
+
+    // Destructor
+    database::~database() {}
+
+/***************************PRIVATE METHODS***************************/
+
     // Open file upon opening of a database and input the file recipes
-    void database::save_file(){
+    void database::read_file(){
         ifstream data(file);
         if (data.fail()){
             cout << "File failed to open.\n";
@@ -65,116 +93,71 @@ using namespace std;
         }
     }
 
-
-
-/***************************CON/DE-STRUCTORS***************************/
-
-    // Default constructor
-    database::database() {
-        save_file();
+    // Adds recipe to vector of recipe pointers: rb_by_name in alpha order
+    void database::add_by_name(recipe& r){
+        int binary_search_index = binary_search_name(rb_by_name, 0, rb_by_name.size(), r.get_name());
+        
+        recipe* to_r = &r;
+        rb_by_name.insert(rb_by_name.begin() + binary_search_index, to_r);
     }
 
-    // Copy constructor
-    database::database(const database& orig)
-    :recipe_box(orig.recipe_box), rb_by_name(orig.rb_by_name), 
-    rb_by_time(orig.rb_by_time), file(orig.file) 
-    {}
+    // Adds recipe to vector of recipe pointers: rb_by_time in ascending order
+    void database::add_by_time(recipe& r){
+        int binary_search_index =
+            binary_search_time(rb_by_time, 0, rb_by_time.size(), r.get_time());
 
-    // Constructor with recipe vector
-    database::database(vector<recipe> recipes)
-    :recipe_box(recipes) 
-    {
-        // Save recipe pointers alphabetically and by time
-        for(int i = 0; i < recipe_box.size(); i++){
-            add_by_name(recipe_box[i]);
-        }
-        for(int i = 0; i < recipe_box.size(); i++){
-            add_by_time(recipe_box[i]);
-        }
-    }
-    
-    // Constructor with recipe file
-    database::database(string file_name)
-    : file(file_name) {
-        save_file();
+        recipe* to_r = &r;        
+        rb_by_time.insert(rb_by_time.begin() + binary_search_index, to_r);
     }
 
-    // Destructor
-    database::~database() {}
-    
-    // When quitting, save all recipes to the database file
-    void database::save_to_file(){
-        cout << "Saving file to: " << file << "\n";
+    /**************************PUBLIC METHODS***************************/
 
-        ofstream data(file);
-        for (int i = 0; i < recipe_box.size(); i++){
-            data << recipe_box.at(i).get_name() << "\n";
-            data << recipe_box.at(i).get_url() << "\n";
-            string str_time = to_string(recipe_box.at(i).get_time());
-            data << str_time << "\n";
-            data << recipe_box.at(i).get_meal() << "\n";
-            string str_vector = vector_to_string(recipe_box.at(i).get_ingreds());
-            data << str_vector << "\n";
-            str_vector = vector_to_string(recipe_box.at(i).get_diets());
-            data << str_vector << "\n";
-        }
+    // GETTER METHODS
 
-        cout << "File saved! Happy cooking!\n";
-        data.close();
-    }
-
+    // gets recipe at index i
     recipe database::get(int i) const{
         return recipe_box.at(i);
     }
 
+    // returns pointer address in recipe_box at index i
     string database::get_p(int i) const{
         string add = reinterpret_cast<const char*>(&(recipe_box.at(i)));
         return add;
     }
     
-    template<typename T>
-    int linear_search(const vector<T>& v, const T key){
-        int i = 0;
-        for (i = 0; i < v.size(); i++){
-            if (v[i] == key){
-                return i;
-            }
-        }
-        return -1;
-    }
-
-    void database::delete_recipe(int i){
-        
-        recipe* r = &(recipe_box.at(i));
-        int idx = linear_search(rb_by_name, r);
-        recipe_box.erase(recipe_box.begin() + i);
-        if (idx == -1){
-            cout << "Recipe cannot be deleted because it has no address.\n";
-            return;
-        }
-        rb_by_name.erase(rb_by_name.begin()+idx);
-        idx = linear_search(rb_by_time, r);
-        if (idx == -1){
-            cout << "Recipe cannot be deleted because it has no address.\n";
-            return;
-        }
-        rb_by_time.erase(rb_by_time.begin()+idx);
-    }
-
     int database::size() const{
         return recipe_box.size();
     }
 
-    void database::print_recipe(vector<const recipe*>& r,int i){
-        r[i]->print();
+    vector<recipe> database::get_recipe_box() const{
+        return recipe_box;
     }
 
+    vector<recipe*> database::get_rb_by_name() const{
+        return rb_by_name;
+    }
+    
+    vector<recipe*> database::get_rb_by_time() const{
+        return rb_by_time;
+    }
+
+    recipe* database::get_rb_by_name_elem(int i) const{
+        return rb_by_name.at(i);
+    }
+    
+    recipe* database::get_rb_by_time_elem(int i) const{
+        return rb_by_time.at(i);
+    }
+
+    // SEARCH METHODS
+
+    // Clears old search results
     void database::prep_results(vector<const recipe*>& results, vector<string>& print){
         results.clear();
         print.clear();
     }
 
-   void database::search_recipe_name_full(const string s,
+    void database::search_recipe_name_full(const string s,
                 vector<const recipe*>& results, vector<string>& print){
         prep_results(results,print);
         for (int i = 0; i < recipe_box.size(); i++){
@@ -303,6 +286,8 @@ using namespace std;
         }
     }
 
+    // LIST METHODS
+
     void database::list_names_alpha(vector<const recipe*>& results, vector<string>& print){
         prep_results(results,print);
         for (int i = 0; i < rb_by_name.size(); i++){
@@ -337,19 +322,129 @@ using namespace std;
         reverse(print.begin(), print.end());
     }
 
-    void database::add_by_name(recipe& r){
-        int binary_search_index = binary_search_name(rb_by_name, 0, rb_by_name.size(), r.get_name());
-        
-        recipe* to_r = &r;
-        rb_by_name.insert(rb_by_name.begin() + binary_search_index, to_r);
+    // ADD & DELETE RECIPE METHODS
+
+    void database::add_recipe(recipe r){
+        recipe_box.push_back(r);
+        rb_by_time.clear();
+        for(int i = 0; i < recipe_box.size(); i++){
+            add_by_time(recipe_box[i]);
+        }
+
+        rb_by_name.clear();
+        for(int i = 0; i < recipe_box.size(); i++){
+            add_by_name(recipe_box[i]);
+        }
     }
 
-    void database::add_by_time(recipe& r){
-        int binary_search_index =
-            binary_search_time(rb_by_time, 0, rb_by_time.size(), r.get_time());
+    void database::delete_recipe(int i){
+        
+        recipe* r = &(recipe_box.at(i));
+        int idx = linear_search(rb_by_name, r);
+        recipe_box.erase(recipe_box.begin() + i);
+        if (idx == -1){
+            cout << "Recipe cannot be deleted because it has no address.\n";
+            return;
+        }
+        rb_by_name.erase(rb_by_name.begin()+idx);
+        idx = linear_search(rb_by_time, r);
+        if (idx == -1){
+            cout << "Recipe cannot be deleted because it has no address.\n";
+            return;
+        }
+        rb_by_time.erase(rb_by_time.begin()+idx);
+    }
 
-        recipe* to_r = &r;        
-        rb_by_time.insert(rb_by_time.begin() + binary_search_index, to_r);
+    // OTHER METHODS
+
+    bool database::not_duplicate(recipe r){
+        bool result = true;
+        for(int i = 0; i < recipe_box.size(); i++){
+            if(existing_url(r.get_url())){
+                result = false;
+            }
+        }
+
+        return result;
+    }
+
+    bool database::existing_url(string url){        
+        bool existing = false;
+
+        for (int i = 0; i < recipe_box.size(); i++){
+            if (recipe_box.at(i).get_url() == url){
+                existing = true;
+            }
+        }
+        return existing;
+    } 
+
+    // When quitting, save all recipes to the database file
+    void database::save_to_file(){
+        cout << "Saving file to: " << file << "\n";
+
+        ofstream data(file);
+        for (int i = 0; i < recipe_box.size(); i++){
+            data << recipe_box.at(i).get_name() << "\n";
+            data << recipe_box.at(i).get_url() << "\n";
+            string str_time = to_string(recipe_box.at(i).get_time());
+            data << str_time << "\n";
+            data << recipe_box.at(i).get_meal() << "\n";
+            string str_vector = vector_to_string(recipe_box.at(i).get_ingreds());
+            data << str_vector << "\n";
+            str_vector = vector_to_string(recipe_box.at(i).get_diets());
+            data << str_vector << "\n";
+        }
+
+        cout << "File saved! Happy cooking!\n";
+        data.close();
+    }
+
+    void database::print_recipe(vector<const recipe*>& r,int i){
+        r[i]->print();
+    }
+
+    // HELPER FUNCTIONS
+
+    vector<string> seperate_list(const string& list){
+        char next_item = ',';
+        string item = "";
+        vector<string> items;
+        for (int i = 0; i < list.size(); i++){
+            if (list.at(i) == next_item){
+                i++;
+                items.push_back(item);
+                item = "";
+                continue;
+            }
+            item += list.at(i);
+            if (i == list.size() - 1){
+                items.push_back(item);
+            }
+        }
+        return items;
+    }
+
+    string vector_to_string(const vector<string> list){
+        string info = "";
+        for (int i = 0; i < list.size(); i++){
+            info += list.at(i);
+            if (i != (list.size() - 1)){
+                info += ", ";
+            }
+        }
+        return info;
+    }
+
+    template<typename T>
+    int linear_search(const vector<T>& v, const T key){
+        int i = 0;
+        for (i = 0; i < v.size(); i++){
+            if (v[i] == key){
+                return i;
+            }
+        }
+        return -1;
     }
  
     int binary_search_time(vector<recipe*> rb, int low, int high, int key){
@@ -388,92 +483,7 @@ using namespace std;
             return mid;
     }
 
-    void database::add_recipe(recipe r){
-        recipe_box.push_back(r);
-        rb_by_time.clear();
-        for(int i = 0; i < recipe_box.size(); i++){
-            add_by_time(recipe_box[i]);
-        }
 
-        rb_by_name.clear();
-        for(int i = 0; i < recipe_box.size(); i++){
-            add_by_name(recipe_box[i]);
-        }
-    }
-
-    vector<recipe> database::get_recipe_box() const{
-        return recipe_box;
-    }
-
-    vector<recipe*> database::get_rb_by_name() const{
-        return rb_by_name;
-    }
     
-    vector<recipe*> database::get_rb_by_time() const{
-        return rb_by_time;
-    }
 
-    void database::clear_rb_by_name(){
-        rb_by_name.clear();
-    }
-
-    recipe* database::get_rb_by_name_elem(int i) const{
-        return rb_by_name.at(i);
-    }
-    
-    recipe* database::get_rb_by_time_elem(int i) const{
-        return rb_by_time.at(i);
-    }
-    
-    bool database::not_duplicate(recipe r){
-        bool result = true;
-        for(int i = 0; i < recipe_box.size(); i++){
-            if(existing_url(r.get_url())){
-                result = false;
-            }
-        }
-
-        return result;
-    }
-
-    bool database::existing_url(string url){        
-        bool existing = false;
-        
-        for (int i = 0; i < recipe_box.size(); i++){
-            if (recipe_box.at(i).get_url() == url){
-                existing = true;
-            }
-        }
-        return existing;
-    }
-    
-    vector<string> seperate_list(const string& list){
-        char next_item = ',';
-        string item = "";
-        vector<string> items;
-        for (int i = 0; i < list.size(); i++){
-            if (list.at(i) == next_item){
-                i++;
-                items.push_back(item);
-                item = "";
-                continue;
-            }
-            item += list.at(i);
-            if (i == list.size() - 1){
-                items.push_back(item);
-            }
-        }
-        return items;
-    }
-    
-    string vector_to_string(const vector<string> list){
-        string info = "";
-        for (int i = 0; i < list.size(); i++){
-            info += list.at(i);
-            if (i != (list.size() - 1)){
-                info += ", ";
-            }
-        }
-        return info;
-    }
-
+ 

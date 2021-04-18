@@ -6,14 +6,11 @@
 #include "cmpt_error.h"
 #include "database.h"
 #include "recipe.h"
-#include "menu.h"
 
 using namespace std;
 
-
 void database_tests();
 void recipe_tests();
-void menu_tests();
 
 // Database Tests
 void database_dflt_constructor_test();
@@ -21,15 +18,11 @@ void database_copy_constructor_test();
 void database_vector_constructor_test();
 void database_file_constructor_test();
 
-void save_file_test();
+void read_file_test();
 void save_to_file_test();
-void add_by_name_test();
-void add_by_time_test();
 void seperate_list_test();
 void binary_search_name_test();
 void binary_search_time_test();
-void add_by_name_test();
-void add_by_time_test();
 void add_recipe_test();
 void delete_recipe_test();
 
@@ -55,12 +48,5 @@ void set_time_test();
 void set_meal_test();
 void set_ingreds_test();
 void set_diets_test();
-
-void add_ingred_test();
-void change_ingred_test();
-void delete_ingred_test();
-
-void add_diet_test();
-void delete_diet_test();
 
 #endif

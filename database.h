@@ -7,6 +7,7 @@
 #include "recipe.h"
 #include <fstream>
 #include <algorithm>
+#include <climits>
 
 using namespace std;
 
@@ -17,7 +18,11 @@ private:
     vector<recipe*> rb_by_name;
     vector<recipe*> rb_by_time;
     string file = "database.txt";
-    void save_file();
+    
+    void read_file();
+    void add_by_name(recipe& r);
+    void add_by_time(recipe& r);
+    
 
 public:
     // Constructors and Destructor
@@ -36,12 +41,8 @@ public:
     vector<recipe*> get_rb_by_time() const;
     recipe* get_rb_by_name_elem(int i) const;
     recipe* get_rb_by_time_elem(int i) const;
-    
-    void save_to_file();
-    void delete_recipe(int i);
-    
-    void print_recipe(vector<const recipe*>& r, int i);
 
+    // Search Methods
     void prep_results(vector<const recipe*>& results, vector<string>& print);
     void search_recipe_name_full(const string s,
         vector<const recipe*>& results, vector<string>& print);
@@ -60,29 +61,30 @@ public:
     void search_recipe_time_range(const int t1, const int t2,
         vector<const recipe*>& results, vector<string>& print);
 
+    // List Methods
     void list_names_alpha(vector<const recipe*>& results, vector<string>& print);
     void list_names_alpha_reverse(vector<const recipe*>& results, vector<string>& print);
     void list_times_up(vector<const recipe*>& results, vector<string>& print);
     void list_times_down(vector<const recipe*>& results, vector<string>& print);
 
-    void add_by_name(recipe& r);
-    void add_by_time(recipe& r);
+    // Add & Delete Recipe Methods
     void add_recipe(recipe r);
-    void update_by_name_by_time();
-    void clear_rb_by_name();
-    
-    void edit_recipe(int i);
+    void delete_recipe(int i); 
+        
+    // Other Methods
     bool not_duplicate(recipe r);
-    bool existing_url(string url);   
+    bool existing_url(string url); 
+    void save_to_file();
+    void print_recipe(vector<const recipe*>& r, int i);
 };
 
+// Helper Functions
 vector<string> seperate_list(const string& list);
 string vector_to_string(const vector<string> list);
-int binary_search_name(vector<recipe*> rb, int low, int high, string key);
-int binary_search_time(vector<recipe*> rb, int low, int high, int key);
+
 template<typename T>
 int linear_search(const vector<T>& v, const T key);
-bool is_url(string url);
-
+int binary_search_name(vector<recipe*> rb, int low, int high, string key);
+int binary_search_time(vector<recipe*> rb, int low, int high, int key);
 
 #endif

@@ -1,11 +1,4 @@
-#include <iostream>
-#include <vector>
-#include <cmath>
-#include "cmpt_error.h"
-#include "database.h"
-#include "recipe.h"
 #include "menu.h"
-#include <limits.h>
 
 using namespace std;
     /***************************CON/DE-STRUCTORS***************************/
@@ -24,15 +17,8 @@ using namespace std;
 
     /********************************METHODS******************************/
 
-    // Prints out numbered list of choices
-    void menu::display_choices(vector<string> choices){
-        for(int i = 0; i < choices.size(); i++){
-            cout << "(" << i + 1 << ") ";
-            cout << choices[i] << "\n";
-        }
-        cout << "\n";
-    }
-
+    // MAIN METHODS
+    
     // Provides user with choices, gets valid user input, and stores choice
     // in user_choice variable
     void menu::get_user_choice(){
@@ -44,26 +30,31 @@ using namespace std;
         if (page != home && page != quit){
             cout << "(-1) Main Menu\n";
         }
-                                                
-
-        cout << "(0) Back \n";
 
         if (page != home){
-            // if input is an int and we are not in the start menu
-            chosen = get_valid_num_inp(-1, page.size(), true);
-        }    
-        else {
+            cout << "(0) Back \n";
+        }                                        
+
+        if (page == home){
             // if input is an int and we are in the start menu
+            chosen = get_valid_num_inp(1, page.size(), true);
+        }    
+        else if (page == quit){
+            // if input is an int and we in the quit menu
             chosen = get_valid_num_inp(0, page.size(), true);
+        }else{
+            // if input is an int and we are in any other page
+            chosen = get_valid_num_inp(-1, page.size(), true);
         }
-        
+
         user_choice = chosen;
     }
 
     // Prints new page for the user based on user_choice variable
     void menu::process_choice(){
         // Reference for using switch statments for menu:
-        // https://stackoverflow.com/questions/41676953/optimization-of-menu-and-submenu-in-c
+        // https://stackoverflow.com/questions/41676953/
+        //                  optimization-of-menu-and-submenu-in-c
         
         divide_pages();
 
@@ -324,6 +315,8 @@ using namespace std;
         getline(cin, name);
         to_lowercase(name);
 
+        cout << '\n';
+
         // GET USER RECIPE URL
         string url;
         bool validUrl = false;
@@ -339,6 +332,8 @@ using namespace std;
             }
         }
 
+        cout << '\n';
+
         // GET USER RECIPE TIME
         int time; 
 
@@ -347,13 +342,15 @@ using namespace std;
         int max_int = INT_MAX;
         time = get_valid_num_inp(0, max_int, false);
 
+        cout << '\n';
+
         // GET USER MEAL TIME
         string meal;
 
-        cout << "Choose which meal option it is: \n";
+        cout << "Choose which meal option it is. \n";
 
         display_choices(meal_options);
-        int meal_index = get_valid_num_inp(1, meal_options.size() - 1, true);
+        int meal_index = get_valid_num_inp(1, meal_options.size(), true) - 1;
         meal = meal_options.at(meal_index);
         cout << '\n';
 
@@ -361,8 +358,13 @@ using namespace std;
         vector<string> ingreds;
         string ingreds_input;
 
-        cout << "Enter in the ingredients one at a time. Enter 0 to stop: \n";
+        cin.clear();
+        cin.ignore(256,'\n');
+
+        cout << "Enter in the ingredients one at a time. Enter 0 to stop. \n \n";
         do{
+            
+            cout << "Enter ingredient: ";
             getline(cin, ingreds_input);
             if(ingreds_input != "0"){
                 to_lowercase(ingreds_input);
@@ -373,7 +375,7 @@ using namespace std;
 
         // GET USER DIET
         vector<string> diet;
-        cout << "Choose which diet options apply one at a time. Enter 0 to stop: \n";
+        cout << "Choose which diet options apply one at a time. Enter 0 to stop. \n";
         display_choices(diet_options);
         
         int diet_input;
@@ -392,10 +394,14 @@ using namespace std;
         if(box.not_duplicate(temp)){
             box.add_recipe(temp);
             divide_pages();
+            cout << "Recipe added to database successfully!. \n \n";
         }else{
+            divide_pages();
             cout << "This recipe already exists. Please try again.\n";
         }
     }
+
+    // HELPER METHODS
 
     // Prompts user to enter number. Checks if number is an int and is low
     // or high. 
@@ -410,7 +416,8 @@ using namespace std;
 
             if(cin.fail() || !is_int(chosen)){
                 // Reference for handling incorrect data types:
-                // https://stackoverflow.com/questions/18728754/checking-cin-input-stream-produces-an-integer 
+                // https://stackoverflow.com/questions/18728754/
+                //          checking-cin-input-stream-produces-an-integer 
                 // if input is not a number or is not an integer
                 cout << "Incorrect input. Please try again. \n";
                 
@@ -460,7 +467,9 @@ using namespace std;
     }
 
     bool menu::is_url(string url){
-        vector<string> url_endings = {".edu", ".org", ".com", ".net", ".biz", ".info", ".gov", ".ca"};
+        vector<string> url_endings = {".edu", ".org", ".com", ".net", 
+                                        ".biz", ".info", ".gov", ".ca"};
+
         vector<string> url_begins = {"http://", "https://"};
 
         bool valid_end = false;
@@ -478,6 +487,8 @@ using namespace std;
 
         return valid_end && valid_begin;
     }
+
+    // PRINT METHODS
 
     // Adds end line spaces
     void menu:: divide_pages(){
@@ -515,6 +526,11 @@ using namespace std;
 
         }else if(page == quit){
             print_title("Quit");
+
+        }else if(page == confirm_deletion){
+            print_title("Are you sure you want to delete?");
+        }else if(page == recipe_options){
+            print_title("Recipe Options");
         }
     }
 
@@ -524,4 +540,12 @@ using namespace std;
         cout << "------------------------------------------\n";
     }
 
+    // Prints out numbered list of choices
+    void menu::display_choices(vector<string> choices){
+        for(int i = 0; i < choices.size(); i++){
+            cout << "(" << i + 1 << ") ";
+            cout << choices[i] << "\n";
+        }
+        cout << "\n";
+    }
 

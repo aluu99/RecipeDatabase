@@ -17,19 +17,19 @@
 CPPFLAGS = -std=c++17 -Wall -Wextra -Werror -Wfatal-errors -Wno-sign-compare -Wnon-virtual-dtor -g
 
 main_test: main.o menu.o recipe.o database.o test.o
-	g++ -o main_test main.o menu.o recipe.o database.o test.o -lncurses
+	g++ -o main_test main.o menu.o recipe.o database.o test.o 
 
 menu:
-	g++ -c $(CPPFLAGS) menu.cpp -lncurses 
+	g++ -c $(CPPFLAGS) menu.cpp 
 
 recipe:
-	g++ -c $(CPPFLAGS) recipe.cpp -lncurses 
+	g++ -c $(CPPFLAGS) recipe.cpp
 
 database:
-	g++ -c $(CPPFLAGS) database.cpp -lncurses 
+	g++ -c $(CPPFLAGS) database.cpp 
 
 test:
-	g++ -c $(CPPFLAGS) test.cpp -lncurses 
+	g++ -c $(CPPFLAGS) test.cpp 
 
 clean:
 	rm -f main_test main.o menu.o recipe.o database.o test.o
