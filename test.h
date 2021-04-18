@@ -33,8 +33,6 @@ void add_by_time_test();
 void add_recipe_test();
 void delete_recipe_test();
 
-void is_url_test();
-
 // Recipe Tests
 void recipe_dflt_constructor_test();
 void recipe_reg_constructor_test();

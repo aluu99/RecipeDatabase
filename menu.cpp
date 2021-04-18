@@ -44,6 +44,7 @@ using namespace std;
         if (page != home && page != quit){
             cout << "(-1) Main Menu\n";
         }
+                                                
 
         cout << "(0) Back \n";
 
@@ -81,30 +82,6 @@ using namespace std;
                 break;
         }
         
-        // if(page == home){
-        //     switch(user_choice){
-        //         // Add a Recipe
-        //         case 1:
-        //             add_user_recipe();
-        //             break;
-        //         // Delete a Recipe
-        //         case 2:
-        //             page = find_recipe;
-        //             break;
-        //         // Find_recipe
-        //         case 3:
-        //             page = find_recipe;
-        //             break;
-        //         // List_recipe
-        //         case 4:
-        //             page = list_recipes;
-        //             break;
-        //         // Quit 
-        //         case 5:
-        //             page = quit;
-        //             break;
-        //     }
-        // }else if(page == find_recipe){
         if(page == find_recipe){  
             switch(user_choice){
                 case 1:
@@ -334,78 +311,94 @@ using namespace std;
         }
     }
 
-    // void menu::add_user_recipe(){
-    //     cin.clear();
-    //     cin.ignore(256, '\n');
+    // Adds a recipe to database using user input. Checks for valid input.O
+    void menu::add_user_recipe(){
+        cin.clear();
+        cin.ignore(256,'\n');
 
-    //     // Get recipe name
-    //     string name;
-    //     name = get_string_inp("Enter the recipe name: ");
+        // GET USER RECIPE NAME
+        string name;
 
-    //     string url;
-    //     bool validUrl = false;
+        cout << "Enter recipe name: ";
+
+        getline(cin, name);
+        to_lowercase(name);
+
+        // GET USER RECIPE URL
+        string url;
+        bool validUrl = false;
         
-    //     // Get recipe time
-    //     int time; 
-    //     cout << "Enter the time it takes to make (in minutes): ";
-    //     time = get_valid_num_inp(0, INT_MAX, false);
+        while(!validUrl){
+            cout << "Copy and paste recipe url: ";
 
-    //     // Get recipe url
-    //     while(!validUrl){
-    //         cout << url << '\n';
-    //         url = get_string_inp("Enter the recipe url: ");
-    //         cout << url << '\n';
-    //         validUrl = is_url(url);
-            
-    //         if(!validUrl){
-    //             cout << "URL is invalid. Please try copy and paste URL exactly. \n";
-    //         }
-    //     }
+            getline(cin,url);
+            validUrl = is_url(url);
 
-    //     // Get recipe meal
-    //     string meal;
-    //     cout << "Choose which meal option it is: \n";
-    //     display_choices(meal_options);
-    //     int meal_index = get_valid_num_inp(1, meal_options.size() - 1, true);
-    //     meal = meal_options.at(meal_index);
+            if(!validUrl){
+                cout << "URL is invalid. Please try copy and paste URL exactly. \n";
+            }
+        }
+
+        // GET USER RECIPE TIME
+        int time; 
+
+        cout << "Enter the time it takes to make (in minutes): ";
+
+        int max_int = INT_MAX;
+        time = get_valid_num_inp(0, max_int, false);
+
+        // GET USER MEAL TIME
+        string meal;
+
+        cout << "Choose which meal option it is: \n";
+
+        display_choices(meal_options);
+        int meal_index = get_valid_num_inp(1, meal_options.size() - 1, true);
+        meal = meal_options.at(meal_index);
+        cout << '\n';
+
+        // GET USER INGREDIENTS
+        vector<string> ingreds;
+        string ingreds_input;
+
+        cout << "Enter in the ingredients one at a time. Enter 0 to stop: \n";
+        do{
+            getline(cin, ingreds_input);
+            if(ingreds_input != "0"){
+                to_lowercase(ingreds_input);
+                ingreds.push_back(ingreds_input);
+            }
+        }while(ingreds_input != "0");
+        cout << '\n';
+
+        // GET USER DIET
+        vector<string> diet;
+        cout << "Choose which diet options apply one at a time. Enter 0 to stop: \n";
+        display_choices(diet_options);
         
-    //     // Get recipe ingredients
-    //     vector<string> ingreds;
-    //     cout << "Enter in the ingredients one at a time. Enter 0 to stop: \n";
-        
-    //     string ingreds_input;
-    //     do{
-    //         ingreds_input = get_string_inp("");
+        int diet_input;
 
-    //         if(ingreds_input != "0"){
-    //             to_lowercase(ingreds_input);
-    //             ingreds.push_back(ingreds_input);
-    //         }
-    //     }while(ingreds_input != "0");
-        
-    //     // Get diet types
-    //     vector<string> diet;
-    //     cout << "Choose which diet options apply one at a time. Enter 0 to stop: \n";
-    //     display_choices(diet_options);
-        
-    //     int diet_input;
-        
-    //     do{
-    //         diet_input = get_valid_num_inp(0, diet_options.size(), true) -1;
-    //         if(diet_input != -1){
-    //             diet.push_back(diet_options[diet_input]);
-    //         }
-    //     }while(diet_input != -1);
+        do{
+            diet_input = get_valid_num_inp(0, diet_options.size(), true) -1;
+            if(diet_input != -1){
+                diet.push_back(diet_options[diet_input]);
+            }
+        }while(diet_input != -1);
 
-    //     recipe temp(name, url, time, meal, ingreds, diet);
+        // CREATE RECIPE
+        recipe temp(name,url,time,meal,ingreds,diet);
 
-    //     if(box.not_duplicate(temp)){
-    //         box.add_recipe(temp);
-    //     }else{
-    //         cout << "This recipe already exists. Please try again. /n";
-    //     }
-    // }
+        // CHECK FOR DUPLICATES
+        if(box.not_duplicate(temp)){
+            box.add_recipe(temp);
+            divide_pages();
+        }else{
+            cout << "This recipe already exists. Please try again.\n";
+        }
+    }
 
+    // Prompts user to enter number. Checks if number is an int and is low
+    // or high. 
     int menu::get_valid_num_inp(int low, int high, const bool auto_prompt){
         bool valid_input = false;
         int chosen;
@@ -437,6 +430,7 @@ using namespace std;
         return chosen;
     }
 
+    // Prompts user to enter input and returns valid string
     string menu::get_string_inp(string prompt){
         string s;
         cout << prompt;
@@ -465,7 +459,7 @@ using namespace std;
         }
     }
 
-    bool is_url(string url){
+    bool menu::is_url(string url){
         vector<string> url_endings = {".edu", ".org", ".com", ".net", ".biz", ".info", ".gov", ".ca"};
         vector<string> url_begins = {"http://", "https://"};
 
@@ -485,6 +479,7 @@ using namespace std;
         return valid_end && valid_begin;
     }
 
+    // Adds end line spaces
     void menu:: divide_pages(){
         int num_of_spaces = 15;
 
@@ -492,6 +487,7 @@ using namespace std;
             cout << '\n'; 
     }
 
+    // Displays the title of the recipe
     void menu:: display_title(){
         if(page == home){
             print_title("Home Page");
@@ -522,79 +518,10 @@ using namespace std;
         }
     }
 
+    // Prints the recipe title 
     void menu:: print_title(string page_title){
         cout << page_title << "\n";
         cout << "------------------------------------------\n";
     }
 
 
- void menu::add_user_recipe(){
-        string name;
-        string url;
-        int time; 
-        string meal;
-        vector<string> ingreds;
-        vector<string> diet;
-
-        cin.clear();
-        cin.ignore(256,'\n');
-
-        cout << "Enter recipe name: ";
-
-        getline(cin, name);
-        to_lowercase(name);
-
-        bool validUrl = false;
-
-        while(!validUrl){
-            cout << "Copy and paste recipe url: ";
-            getline(cin,url);
-
-            validUrl = is_url(url);
-
-            if(!validUrl){
-                cout << "URL is invalid. Please try copy and paste URL exactly. \n";
-            }
-        }
-
-        cout << "Enter the time it takes to make (in minutes): ";
-        int max_int = INT_MAX;
-        time = get_valid_num_inp(0, max_int, false);
-
-        cout << "Choose which meal option it is: \n";
-        display_choices(meal_options);
-        int meal_index = get_valid_num_inp(1, meal_options.size() - 1, true);
-        meal = meal_options.at(meal_index);
-
-        cout << "Enter in the ingredients one at a time. Enter 0 to stop: \n";
-
-        string ingreds_input;
-        do{
-            getline(cin, ingreds_input);
-            if(ingreds_input != "0"){
-                to_lowercase(ingreds_input);
-                ingreds.push_back(ingreds_input);
-            }
-        }while(ingreds_input != "0");
-
-
-        cout << "Choose which diet options apply one at a time. Enter 0 to stop: \n";
-        display_choices(diet_options);
-
-        int diet_input;
-
-        do{
-            diet_input = get_valid_num_inp(0, diet_options.size(), true) -1;
-            if(diet_input != -1){
-                diet.push_back(diet_options[diet_input]);
-            }
-        }while(diet_input != -1);
-
-        recipe temp(name, url, time, meal, ingreds, diet);
-
-        if(box.not_duplicate(temp)){
-            box.add_recipe(temp);
-        }else{
-            cout << "This recipe already exists. Please try again. /n";
-        }
-    }

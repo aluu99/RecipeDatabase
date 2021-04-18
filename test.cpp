@@ -102,7 +102,6 @@ void database_tests(){
     delete_recipe_test();
     // binary_search_time_test();
     // add_by_time_test();
-    // is_url_test();
     add_recipe_test();
 
     cout << "All database class tests passed! \n";
@@ -465,14 +464,6 @@ void delete_recipe_test(){
         assert(rb_name_new.at(i) == rb_name.at(i+1));
         assert(rb_time_new.at(i) == rb_time.at(i+1));
     }
-
-    cout << "PASSED\n";
-}
-
-void is_url_test(){
-    cout << "Testing is_url_test(): ";
-
-    assert(is_url("https://www.allrecipes.com/recipes/23070/everyday-cooking/cookware-and-equipment/air-fryer/"));
 
     cout << "PASSED\n";
 }

@@ -11,34 +11,18 @@
 
 using namespace std;
 
-    vector<string> seperate_list(const string& list){
-        char next_item = ',';
-        string item = "";
-        vector<string> items;
-        for (int i = 0; i < list.size(); i++){
-            if (list.at(i) == next_item){
-                i++;
-                items.push_back(item);
-                item = "";
-                continue;
-            }
-            item += list.at(i);
-            if (i == list.size() - 1){
-                items.push_back(item);
-            }
-        }
-        return items;
-    }
-
+    // Open file upon opening of a database and input the file recipes
     void database::save_file(){
         ifstream data(file);
         if (data.fail()){
             cout << "File failed to open.\n";
             return;
         }
+
+        // Add the appropriate field to a temp recipe
+        // When filled, push back and reset temp
         int field = 0;
         recipe temp;
-
         while (true){
             string input = "";
             getline(data,input);
@@ -74,23 +58,51 @@ using namespace std;
         }
         data.close();
 
+        // Add recipes to vectors in alphabetical order and time order
         for(int i = 0; i < recipe_box.size(); i++){
             add_by_name(recipe_box[i]);
             add_by_time(recipe_box[i]);
         }
     }
 
-    string vector_to_string(const vector<string> list){
-        string info = "";
-        for (int i = 0; i < list.size(); i++){
-            info += list.at(i);
-            if (i != (list.size() - 1)){
-                info += ", ";
-            }
-        }
-        return info;
+
+
+/***************************CON/DE-STRUCTORS***************************/
+
+    // Default constructor
+    database::database() {
+        save_file();
     }
 
+    // Copy constructor
+    database::database(const database& orig)
+    :recipe_box(orig.recipe_box), rb_by_name(orig.rb_by_name), 
+    rb_by_time(orig.rb_by_time), file(orig.file) 
+    {}
+
+    // Constructor with recipe vector
+    database::database(vector<recipe> recipes)
+    :recipe_box(recipes) 
+    {
+        // Save recipe pointers alphabetically and by time
+        for(int i = 0; i < recipe_box.size(); i++){
+            add_by_name(recipe_box[i]);
+        }
+        for(int i = 0; i < recipe_box.size(); i++){
+            add_by_time(recipe_box[i]);
+        }
+    }
+    
+    // Constructor with recipe file
+    database::database(string file_name)
+    : file(file_name) {
+        save_file();
+    }
+
+    // Destructor
+    database::~database() {}
+    
+    // When quitting, save all recipes to the database file
     void database::save_to_file(){
         cout << "Saving file to: " << file << "\n";
 
@@ -110,33 +122,6 @@ using namespace std;
         cout << "File saved! Happy cooking!\n";
         data.close();
     }
-
-    database::database() {
-        save_file();
-    }
-
-    database::database(const database& orig)
-    :recipe_box(orig.recipe_box), rb_by_name(orig.rb_by_name), 
-    rb_by_time(orig.rb_by_time), file(orig.file) 
-    {}
-
-    database::database(vector<recipe> recipes)
-    :recipe_box(recipes) 
-    {
-        for(int i = 0; i < recipe_box.size(); i++){
-            add_by_name(recipe_box[i]);
-        }
-        for(int i = 0; i < recipe_box.size(); i++){
-            add_by_time(recipe_box[i]);
-        }
-    }
-    
-    database::database(string file_name)
-    : file(file_name) {
-        save_file();
-    }
-
-    database::~database() {}
 
     recipe database::get(int i) const{
         return recipe_box.at(i);
@@ -189,30 +174,35 @@ using namespace std;
         print.clear();
     }
 
-   void database::search_recipe_name_full(const string s, vector<const recipe*>& results, vector<string>& print){
+   void database::search_recipe_name_full(const string s,
+                vector<const recipe*>& results, vector<string>& print){
         prep_results(results,print);
         for (int i = 0; i < recipe_box.size(); i++){
             if (recipe_box.at(i).get_name() == s){
                 results.push_back(&(recipe_box.at(i)));
-                string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+                string info = recipe_box.at(i).get_name() + "   "
+                    + to_string(recipe_box.at(i).get_time()) + " minutes";
                 print.push_back(info);
             }
         }
     }
 
-    void database::search_recipe_name_part(const string s, vector<const recipe*>& results, vector<string>& print){
+    void database::search_recipe_name_part(const string s,
+            vector<const recipe*>& results, vector<string>& print){
         prep_results(results,print);
         for (int i = 0; i < recipe_box.size(); i++){
             string name = recipe_box.at(i).get_name();
             if (name.find(s) != std::string::npos){
                 results.push_back(&(recipe_box.at(i)));
-                string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+                string info = recipe_box.at(i).get_name() + "   "
+                    + to_string(recipe_box.at(i).get_time()) + " minutes";
                 print.push_back(info);
             }
         }
     }
 
-    void database::search_diet(const string s, vector<const recipe*>& results, vector<string>& print){
+    void database::search_diet(const string s,
+            vector<const recipe*>& results, vector<string>& print){
         prep_results(results,print);
         cin.clear();
         cin.ignore(256,'\n');
@@ -221,7 +211,8 @@ using namespace std;
             for (int j = 0; j < diets.size(); j++){
                 if (diets.at(j) == s){
                     results.push_back(&(recipe_box.at(i)));
-                    string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+                    string info = recipe_box.at(i).get_name() + "   "
+                        + to_string(recipe_box.at(i).get_time()) + " minutes";
                     print.push_back(info);
                     break;
                 }
@@ -229,7 +220,8 @@ using namespace std;
         }
     }
 
-    void database::search_meal(const string s, vector<const recipe*>& results, vector<string>& print){
+    void database::search_meal(const string s,
+            vector<const recipe*>& results, vector<string>& print){
         prep_results(results,print);
         cin.clear();
         cin.ignore(256,'\n');
@@ -237,14 +229,16 @@ using namespace std;
         for (int i = 0; i < recipe_box.size(); i++){
             if (recipe_box.at(i).get_meal() == s){
                     results.push_back(&(recipe_box.at(i)));
-                    string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+                    string info = recipe_box.at(i).get_name() + "   "
+                        + to_string(recipe_box.at(i).get_time()) + " minutes";
                     print.push_back(info);
                     break;
             }
         }
     }
 
-    void database::search_recipe_ingred_full(const string s, vector<const recipe*>& results, vector<string>& print){
+    void database::search_recipe_ingred_full(const string s,
+            vector<const recipe*>& results, vector<string>& print){
         prep_results(results,print);
 
         for (int i = 0; i < recipe_box.size(); i++){
@@ -252,7 +246,8 @@ using namespace std;
             for (int j = 0; j < ingreds.size(); j++){
                 if (ingreds.at(j) == s){
                     //results.push_back(&(recipe_box.at(i)));
-                    string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+                    string info = recipe_box.at(i).get_name() + "   "
+                        + to_string(recipe_box.at(i).get_time()) + " minutes";
                     print.push_back(info);
                     break;
                 }
@@ -260,7 +255,8 @@ using namespace std;
         }
     }
 
-    void database::search_recipe_ingred_part(const string s, vector<const recipe*>& results, vector<string>& print){
+    void database::search_recipe_ingred_part(const string s,
+            vector<const recipe*>& results, vector<string>& print){
         prep_results(results,print);
 
         for (int i = 0; i < recipe_box.size(); i++){
@@ -269,34 +265,39 @@ using namespace std;
                 string ingred = recipe_box.at(i).get_ingred(j);
                 if (ingred.find(s) != std::string::npos){
                     //results.push_back(&(recipe_box.at(i)));
-                    string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+                    string info = recipe_box.at(i).get_name() + "   "
+                        + to_string(recipe_box.at(i).get_time()) + " minutes";
                     print.push_back(info);
                 }
             }
         }
     }
 
-    void database::search_recipe_time_full(const int t, vector<const recipe*>& results, vector<string>& print){
+    void database::search_recipe_time_full(const int t,
+            vector<const recipe*>& results, vector<string>& print){
         prep_results(results,print);
 
         for (int i = 0; i < recipe_box.size(); i++){
             if (recipe_box.at(i).get_time() == t){
                 const recipe* r = &recipe_box.at(i);
                 results.push_back(r);
-                string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+                string info = recipe_box.at(i).get_name() + "   "
+                    + to_string(recipe_box.at(i).get_time()) + " minutes";
                 print.push_back(info);
             }
         }
     }
 
-    void database::search_recipe_time_range(const int t1, const int t2, vector<const recipe*>& results, vector<string>& print){
+    void database::search_recipe_time_range(const int t1, const int t2,
+            vector<const recipe*>& results, vector<string>& print){
         prep_results(results,print);
 
         for (int i = 0; i < recipe_box.size(); i++){
             if (recipe_box.at(i).get_time() >= t1 && recipe_box.at(i).get_time() <= t2){
                 const recipe* r = &recipe_box.at(i);
-                results.push_back(r);
-                string info = recipe_box.at(i).get_name() + "   " + to_string(recipe_box.at(i).get_time()) + " minutes";
+               results.push_back(r);
+                string info = recipe_box.at(i).get_name() + "   "
+                    + to_string(recipe_box.at(i).get_time()) + " minutes";
                 print.push_back(info);
             }
         }
@@ -324,7 +325,8 @@ using namespace std;
         prep_results(results,print);
         for (int i = 0; i < rb_by_time.size(); i++){
             results.push_back(rb_by_time[i]);
-            string info = rb_by_time[i]->get_name() + "   " + to_string(rb_by_time[i]->get_time()) + " minutes";
+            string info = rb_by_time[i]->get_name() + "   "
+                + to_string(rb_by_time[i]->get_time()) + " minutes";
             print.push_back(info);
         }
     }
@@ -343,7 +345,8 @@ using namespace std;
     }
 
     void database::add_by_time(recipe& r){
-        int binary_search_index = binary_search_time(rb_by_time, 0, rb_by_time.size(), r.get_time());
+        int binary_search_index =
+            binary_search_time(rb_by_time, 0, rb_by_time.size(), r.get_time());
 
         recipe* to_r = &r;        
         rb_by_time.insert(rb_by_time.begin() + binary_search_index, to_r);
@@ -387,7 +390,6 @@ using namespace std;
 
     void database::add_recipe(recipe r){
         recipe_box.push_back(r);
-
         rb_by_time.clear();
         for(int i = 0; i < recipe_box.size(); i++){
             add_by_time(recipe_box[i]);
@@ -444,3 +446,34 @@ using namespace std;
         }
         return existing;
     }
+    
+    vector<string> seperate_list(const string& list){
+        char next_item = ',';
+        string item = "";
+        vector<string> items;
+        for (int i = 0; i < list.size(); i++){
+            if (list.at(i) == next_item){
+                i++;
+                items.push_back(item);
+                item = "";
+                continue;
+            }
+            item += list.at(i);
+            if (i == list.size() - 1){
+                items.push_back(item);
+            }
+        }
+        return items;
+    }
+    
+    string vector_to_string(const vector<string> list){
+        string info = "";
+        for (int i = 0; i < list.size(); i++){
+            info += list.at(i);
+            if (i != (list.size() - 1)){
+                info += ", ";
+            }
+        }
+        return info;
+    }
+
