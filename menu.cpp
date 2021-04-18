@@ -5,6 +5,7 @@
 #include "database.h"
 #include "recipe.h"
 #include "menu.h"
+#include <limits.h>
 
 using namespace std;
 
@@ -17,16 +18,7 @@ using namespace std;
         }
     }
 
-    // menu::menu(database* box)
-    // :page(home), last_page(home), box(box){
-    //     cout << box->get(0).get_name() << "\n";
-    //     while(true){
-    //        get_user_choice();
-    //        process_choice();
-    //     }
-    // }
-
-    menu::~menu() {}
+    menu::~menu() { }
 
     bool menu::is_int(double d){
         if(floor(d) == ceil(d)){
@@ -43,46 +35,13 @@ using namespace std;
         }
     }
 
-    // int menu::get_valid_num_inp(int low, int high, bool & valid_input){
-    //     int chosen;
-        
-    //     while(!valid_input){
-    //         cout << "Enter your choice: ";
-    //         cin >> chosen;
-
-    //         if(cin.fail() || !is_int(chosen)){
-    //             // Reference for handling incorrect data types:
-    //             // https://stackoverflow.com/questions/18728754/checking-cin-input-stream-produces-an-integer 
-    //             // if input is not a number or is not an integer
-    //             cout << "Incorrect input. Please try again. \n";
-    //             cin.clear();
-    //             cin.ignore(256, '\n');
-    //             continue;
-    //         }
-            
-    //         if(chosen >= low && chosen <= high){
-    //                 valid_input = true;
-    //         }
-
-    //         if(!valid_input)
-    //             // if input is an integer but not a correct input
-    //             cout << "Incorrect input. Please try again. \n";
-    //     }
-    //     return chosen;
-    // }
-
-    void menu::get_user_choice(){
-        double chosen;
+    int menu::get_valid_num_inp(int low, int high, const bool auto_prompt){
         bool valid_input = false;
-        display_choices(page);
-
-        if (page != home || page != quit){
-            cout << "(0) Main Menu\n";
-        }
-        cout << "(-1) Back\n";
-
+        int chosen;
+        
         while(!valid_input){
-            cout << "Enter your choice: ";
+            if(auto_prompt)
+                cout << "Enter your choice: ";
             cin >> chosen;
 
             if(cin.fail() || !is_int(chosen)){
@@ -95,21 +54,37 @@ using namespace std;
                 continue;
             }
             
-            if (page != home){
-                // if input is an int and we are not in the start menu
-                if(((chosen >= 1) && (chosen <= page.size())) || chosen == 0 || chosen == -1){
-                    valid_input = true;
-                }    
-            } else {
-                // if input is an int and we are in the start menu
-                if(((chosen >= 1) && (chosen <= page.size())) || chosen == -1){
-                    valid_input = true;
-                }
+            if(chosen >= low && chosen <= high){
+                valid_input = true;
             }
 
             if(!valid_input)
                 // if input is an integer but not a correct input
                 cout << "Incorrect input. Please try again. \n";
+        }
+        return chosen;
+    }
+
+    void menu::get_user_choice(){
+        double chosen;
+
+        display_choices(page);
+
+        if (page != home && page != quit){
+            cout << "(-1) Main Menu\n";
+        }
+
+        if(page != home){
+            cout << "(0) Back \n";
+        }
+
+        if (page != home){
+            // if input is an int and we are not in the start menu
+            chosen = get_valid_num_inp(-1, page.size(), true);
+        }    
+        else {
+            // if input is an int and we are in the start menu
+            chosen = get_valid_num_inp(0, page.size(), true);
         }
         
         user_choice = chosen;
@@ -123,17 +98,17 @@ using namespace std;
         last_page = page;
         switch(user_choice){
             case -1:
-                page = temp;
+                page = home;
                 break;         
             case 0:
-                page = home;
+                page = temp;
                 break;
         }
         
         if(page == home){
             switch(user_choice){
                 case 1:
-                    // add_recipe(); TO-DO!!!!
+                    add_user_recipe();
                     break;
                 case 2:
                     page = find_recipe;
@@ -202,6 +177,8 @@ using namespace std;
                     //      - page = recipe_options; , save selected recipe id
                     //      - page = home;
                     //      - page go back
+                    box.search_recipe_time_full(recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 2:
                     // int low_num = get_lower_range();
@@ -213,6 +190,8 @@ using namespace std;
                     //set_search_results();
                     // page = search_results;
                     // get_user_choice();
+                    box.search_recipe_time_range(recipe_results, print_results);
+                    page = print_results;
                     break;
             }
         }else if(page == find_by_ingred){
@@ -220,31 +199,41 @@ using namespace std;
                 case 1:
                     // full ingredient
                     // must search throuvh vector
+                    box.search_recipe_ingred_full(recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 2:
                     // part ingredient
                     // must search through vector
+                    box.search_recipe_ingred_part(recipe_results, print_results);
+                    page = print_results;
                     break;
             }
         }else if(page == find_by_meal){
             switch(user_choice){
                 case 1:
-                    //lists brakfasts
+                    box.search_meal("breakfast",recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 2:
-                    //lists lunches
+                    box.search_meal("lunch",recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 3:
-                    //lists dinners
+                    box.search_meal("dinner",recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 4:
-                    //lists snacks
+                    box.search_meal("snack",recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 5:
-                    //lists drink
+                    box.search_meal("drink",recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 6:
-                    //lists dessert
+                    box.search_meal("dessert",recipe_results, print_results);
+                    page = print_results;
                     break;
             }
         }else if(page == find_by_diet){
@@ -286,15 +275,23 @@ using namespace std;
             switch(user_choice){
                 case 1:
                     //lists name alpha
+                    box.list_names_alpha(recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 2:
                     //lists names reverse alpha
+                    box.list_names_alpha_reverse(recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 3:
                     //lists time ascending
+                    box.list_times_up(recipe_results, print_results);
+                    page = print_results;
                     break;
                 case 4:
                     //lists time descending
+                    box.list_times_down(recipe_results, print_results);
+                    page = print_results;
                     break;
             }
         }else if(page == quit){
@@ -314,22 +311,22 @@ using namespace std;
                     page = empty;
                     break;
                 case 2:
-                    //int j = 0;
-                    // string add = reinterpret_cast<const char*>(recipe_results[recipe_choice]);
-                    // for (; j < box.size(); j++){
-                    //     if (box.get_p(j) == add){
-                    //         break;
-                    //     }
-                    // }
-                    box.delete_recipe(recipe_choice);
-                    page = empty;
+                    int j = 0;
+                    string add = reinterpret_cast<const char*>(recipe_results[recipe_choice]);
+                    for (; j < box.size(); j++){
+                        if (box.get_p(j) == add){
+                            break;
+                        }
+                    }
+                    box.delete_recipe(j);
+                    page = home;
                     break;
             }
         }
     }
 
     bool is_url(string url){
-        vector<string> url_endings = {".edu", ".org", ".com", ".net", ".biz", ".info", ".gov"};
+        vector<string> url_endings = {".edu", ".org", ".com", ".net", ".biz", ".info", ".gov", ".ca"};
         vector<string> url_begins = {"http://", "https://"};
 
         bool valid_end = false;
@@ -348,50 +345,86 @@ using namespace std;
         return valid_end && valid_begin;
     }
 
-    // void menu::add_user_recipe(){
-    //     recipe temp();
+    void to_lowercase(string &s){
+        for(int i = 0; i < s.length(); i++){
+            char temp = tolower(s[i]);
+            s[i] = temp;
+        }
+    }
 
-    //     string name;
-    //     string url;
-    //     int time; 
-    //     string meal;
-    //     vector<string> ingreds;
-    //     vector<string> diet;
+    void menu::add_user_recipe(){
+        string name;
+        string url;
+        int time; 
+        string meal;
+        vector<string> ingreds;
+        vector<string> diet;
         
-    //     cout << "Enter recipe name: ";
-    //     cin >> name;
+        cin.clear();
+        cin.ignore(256,'\n');
+
+        cout << "Enter recipe name: ";
+        // reduce to lowercase
+        getline(cin, name);
+        to_lowercase(name);
+
+        bool validUrl = false;
         
-    //     bool validUrl = false;
+        while(!validUrl){
+            cout << "Copy and paste recipe url: ";
+            getline(cin,url);
+            
+            validUrl = is_url(url);
+            
+            if(!validUrl){
+                cout << "URL is invalid. Please try copy and paste URL exactly. \n";
+            }
+        }
         
-    //     while(!validUrl){
-    //         cout << "Copy and paste recipe url: ";
-    //         cin >> url;
-            
-    //         validUrl = is_url(url);
-            
-    //         if(!validUrl){
-    //             cout << "URL is invalid. Please try copy and paste URL exactly. \n";
-    //         }
-    //     }
+        cout << "Enter the time it takes to make (in minutes): ";
+        int max_int = INT_MAX;
+        time = get_valid_num_inp(0, max_int, false);
 
-    //     bool validTime = false;
+        cout << "Choose which meal option it is: \n";
+        display_choices(meal_options);
+        int meal_index = get_valid_num_inp(1, meal_options.size() - 1, true);
+        meal = meal_options.at(meal_index);
+        
+        cout << "Enter in the ingredients one at a time. Enter 0 to stop: \n";
+        
+        string ingreds_input;
+        do{
+            getline(cin, ingreds_input);
+            if(ingreds_input != "0"){
+                to_lowercase(ingreds_input);
+                ingreds.push_back(ingreds_input);
+            }
+        }while(ingreds_input != "0");
+        
 
-    //         while(!validTime){
-    //             cout << "Please enter time recipe (in minutes): ";
-    //             cin >> time;
-                
-    //             if(cin.fail() || time < 0){
-    //                 cout << "Time input is invalid. Please try again. \n";
+        cout << "Choose which diet options apply one at a time. Enter 0 to stop: \n";
+        display_choices(diet_options);
+        
+        int diet_input;
+        
+        do{
+            diet_input = get_valid_num_inp(0, diet_options.size(), true) -1;
+            if(diet_input != -1){
+                diet.push_back(diet_options[diet_input]);
+            }
+        }while(diet_input != -1);
 
-    //                 cin.clear();
-    //                 cin.ignore(256, '\n');
-    //             }
-    //         }
+        cout << name << ", " << url << ", " << time << ", " << meal << "\n";
 
-    //     bool validMeal = false;
-    //         display_choices(meal_options);
-            
-    //         while(!validMeal){
-                
-    //         }
-    // }
+        //recipe temp(name, url, time, meal, ingreds, diet);
+        temp.set_name(name);
+        temp.set_url(url);
+        temp.set_time(time);
+        temp.set_meal(meal);
+        temp.set_ingreds(ingreds);
+        temp.set_diets(diet);
+
+        cout << temp.get_name();
+
+        box.add_recipe(temp);
+    }

@@ -37,7 +37,7 @@ public:
     ~database();
 
     recipe get(int i) const;
-    //string get_p(int i) const;
+    string get_p(int i) const;
     
     vector<recipe> get_recipe_box() const;
     vector<recipe*> get_rb_by_name() const;
@@ -47,28 +47,29 @@ public:
     void save_to_file();
     void delete_recipe(int i);
     int size() const;
-    void print_recipe(vector<recipe*>& r, int i);
+    void print_recipe(vector<const recipe*>& r, int i);
 
     
-    void search_recipe_name_full(vector<recipe*>& results, vector<string>& print);
-    void search_recipe_name_part(vector<recipe*>& results, vector<string>& print);
-    void search_diet(const string s, vector<recipe*>& results, vector<string>& print);
+    void search_recipe_name_full(vector<const recipe*>& results, vector<string>& print);
+    void search_recipe_name_part(vector<const recipe*>& results, vector<string>& print);
+    void search_diet(const string s, vector<const recipe*>& results, vector<string>& print);
+    void search_meal(const string s, vector<const recipe*>& results, vector<string>& print);
+    void search_recipe_ingred_full(vector<const recipe*>& results, vector<string>& print);
+    void search_recipe_ingred_part(vector<const recipe*>& results, vector<string>& print);
+    void search_recipe_time_full(vector<const recipe*>& results, vector<string>& print);
+    void search_recipe_time_range(vector<const recipe*>& results, vector<string>& print);
 
-    // Not currently in use
-    recipe get_from_time(int i) const;
-    
-    vector<int> search_recipe_meal_full(string s) const;
-    vector<int> search_recipe_meal_part(string s) const;
-    vector<int> search_recipe_ingred_full(string s) const;
-    vector<int> search_recipe_ingred_part(string s) const;
-    vector<int> search_recipe_time_full(int t) const;
-    vector<int> search_recipe_time_range(int t_begin, int t_end) const;
-
+    void list_names_alpha(vector<const recipe*>& results, vector<string>& print);
+    void list_names_alpha_reverse(vector<const recipe*>& results, vector<string>& print);
+    void list_times_up(vector<const recipe*>& results, vector<string>& print);
+    void list_times_down(vector<const recipe*>& results, vector<string>& print);
 
     void add_by_name(recipe& r);
     void add_by_time(recipe& r);
     void add_recipe(recipe r);
     void add_user_recipe();
+    void update_by_name_by_time();
+    void clear_rb_by_name();
     
     void edit_recipe(int i);
     void print_recipe_name(int i);

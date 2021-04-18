@@ -102,8 +102,9 @@ void database_tests(){
     // add_by_name_test();
     // delete_recipe_test();
     // binary_search_time_test();
-    add_by_time_test();
-    //is_url_test();
+    // add_by_time_test();
+    // is_url_test();
+    add_recipe_test();
 
     cout << "All database class tests passed! \n";
 }
@@ -405,7 +406,7 @@ void add_recipe_test(){
                 {"chicken", "broth", "celery", "carrots"},
                 {"meat", "dairy free"});
                 
-    recipe twenty_min(   "chocolate chip cookies",
+    recipe twenty_min(   "chocolate chip",
                 "https://www.allrecipes.com/recipe/277079/cookies/",
                 20,
                 "dessert",
@@ -424,10 +425,18 @@ void add_recipe_test(){
 
     test.add_recipe(thirty_min);
     
-    assert(test.get_rb_by_time()[0]->get_time() == one_min.get_time());
-    assert(test.get_rb_by_time()[1]->get_time() == twenty_min.get_time());
-    assert(test.get_rb_by_time()[2]->get_time() == thirty_min.get_time());
-    assert(test.get_rb_by_time()[3]->get_time() == forty_five_min.get_time());
+    //cout << test.get_rb_by_time()[0]->get_time() << '\n';
+    //cout << test.get_rb_by_name()[0]->get_name() << '\n';
+
+    // assert(test.get_rb_by_time()[0]->get_time() == one_min.get_time());
+    // assert(test.get_rb_by_time()[1]->get_time() == twenty_min.get_time());
+    // assert(test.get_rb_by_time()[2]->get_time() == thirty_min.get_time());
+    // assert(test.get_rb_by_time()[3]->get_time() == forty_five_min.get_time());
+
+    assert(test.get_rb_by_name()[0]->get_name() == one_min.get_name());
+    // assert(test.get_rb_by_name()[1]->get_name() == forty_five_min.get_name());
+    // assert(test.get_rb_by_name()[2]->get_name() == twenty_min.get_name());
+    // assert(test.get_rb_by_name()[3]->get_name() == thirty_min.get_name());
 
     cout << "PASSED\n";
 }

@@ -6,6 +6,7 @@
 #include "cmpt_error.h"
 #include "database.h"
 #include "recipe.h"
+#include <limits.h>
 
 using namespace std;
 
@@ -32,15 +33,16 @@ private:
     database box;
     int user_choice;
     int recipe_choice;
+    recipe temp;
 
     void display_choices(vector<string> choices);
-    int get_valid_num_inp(int low, int high);
+    int get_valid_num_inp(int low, int high, const bool auto_prompt);
 public:
     menu();
     menu(database* box);
     ~menu();
     
-    vector<recipe*> recipe_results;
+    vector<const recipe*> recipe_results;
     vector<string> print_results;
 
     bool is_int(double d);
