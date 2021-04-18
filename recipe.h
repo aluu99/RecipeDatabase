@@ -9,6 +9,7 @@ using namespace std;
 
 class recipe {
 private:
+    // Recipe fields
     string name;
     string url;
     int time;
@@ -17,14 +18,16 @@ private:
     vector<string> diet;
 
 public:
+    // Constructors and Destructor
     recipe();
     recipe(string n, string url, int t, string m, vector<string> i, vector<string> d);
     recipe(const recipe& other);
-    recipe& operator=(const recipe& r);
-
     ~recipe();
 
+    // Overload recipe operator=
+    recipe& operator=(const recipe& r);
     
+    // Getter Methods
     string get_name() const;
     string get_url() const;
     int get_time() const;
@@ -36,6 +39,7 @@ public:
     string get_diet(int i) const;
     int get_num_diets() const;
     
+    // Setter Methods
     void set_name(string s);
     void set_url(string url);
     void set_time(int t);
@@ -43,16 +47,20 @@ public:
     void set_ingreds(vector<string> recipes);
     void set_diets(vector<string> d);
     
-    void add_ingred(string i);
-    void change_ingred(int i, string s);
-    void delete_ingred(int index);
+    // // Edit Ingredients
+    // void add_ingred(string i);
+    // void change_ingred(int i, string s);
+    // void delete_ingred(int index);
     
-    void add_diet(string d);
-    void delete_diet(int index);
+    // // Edit Diets
+    // void add_diet(string d);
+    // void delete_diet(int index);
 
+    // Print recipe info
     void print() const;
 };
 
+// Overload recipe operator==
+bool operator==(recipe a, recipe b);
 
 #endif
-        

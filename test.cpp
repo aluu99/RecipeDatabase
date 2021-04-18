@@ -80,7 +80,6 @@ database test_database(recipes);
 // calls test functions for menu class
 void menu_tests(){
    cout << "Testing menu class tests ... \n";
-   database box("my_recipes.txt");
    menu test;
    cout << "All menu class tests passed! \n";
 }
@@ -100,7 +99,7 @@ void database_tests(){
     // save_to_file_test();
     // binary_search_name_test();
     // add_by_name_test();
-    // delete_recipe_test();
+    delete_recipe_test();
     // binary_search_time_test();
     // add_by_time_test();
     // is_url_test();
@@ -132,11 +131,11 @@ void recipe_tests(){
     set_meal_test();
     set_ingreds_test();
     set_diets_test();
-    add_ingred_test();
-    change_ingred_test();
-    delete_ingred_test();
-    add_diet_test();
-    delete_diet_test();
+    // add_ingred_test();
+    // change_ingred_test();
+    // delete_ingred_test();
+    // add_diet_test();
+    // delete_diet_test();
     test1.print();
 
     cout << "All recipe class tests passed! \n";
@@ -480,16 +479,6 @@ void is_url_test(){
 
 /****************************RECIPE TEST FUNCTIONS****************************/
 
-bool operator==(recipe a, recipe b){
-    if(a.get_name() != b.get_name()) return false;
-    if(a.get_url() != b.get_url()) return false;
-    if(a.get_time() != b.get_time()) return false;
-    if(a.get_meal() != b.get_meal()) return false;
-    if(a.get_ingreds() != b.get_ingreds()) return false;
-    if(a.get_diets() != b.get_diets()) return false;
-    return true;
-}
-
 // CONSTRUCTOR TESTS
 void recipe_dflt_constructor_test(){
     cout << "Testing default recipe constructor: ";
@@ -823,101 +812,101 @@ void set_diets_test(){
 
 // OTHER METHOD TESTS
 
-void add_ingred_test(){
-    cout << "Testing add_ingred_test(): ";
+// void add_ingred_test(){
+//     cout << "Testing add_ingred_test(): ";
     
-    recipe test(test0);
-    test.add_ingred("apple");
-    assert(test.get_ingred(test.get_num_ingreds()-1) == "apple");
-    test.add_ingred(" b a n a n a ");
-    assert(test.get_ingred(test.get_num_ingreds()-1) == " b a n a n a ");
-    test.add_ingred(" ");
-    assert(test.get_ingred(test.get_num_ingreds()-1) == " ");
-    test.add_ingred("123-456!");
-    assert(test.get_ingred(test.get_num_ingreds()-1) == "123-456!");
+//     recipe test(test0);
+//     test.add_ingred("apple");
+//     assert(test.get_ingred(test.get_num_ingreds()-1) == "apple");
+//     test.add_ingred(" b a n a n a ");
+//     assert(test.get_ingred(test.get_num_ingreds()-1) == " b a n a n a ");
+//     test.add_ingred(" ");
+//     assert(test.get_ingred(test.get_num_ingreds()-1) == " ");
+//     test.add_ingred("123-456!");
+//     assert(test.get_ingred(test.get_num_ingreds()-1) == "123-456!");
 
-    cout << "PASSED. \n";
-}
+//     cout << "PASSED. \n";
+// }
 
-void change_ingred_test(){
-    cout << "Testing change_ingred_test(): ";
+// void change_ingred_test(){
+//     cout << "Testing change_ingred_test(): ";
 
-    recipe test(test2);
-    test.change_ingred(0,"apple");
-    assert(test.get_ingred(0) == "apple");
-    test.change_ingred(1," b a n a n a ");
-    assert(test.get_ingred(1) == " b a n a n a ");
-    test.change_ingred(2," b a na n a ");
-    assert(test.get_ingred(2) == " b a na n a ");
-    test.change_ingred(3,"avocado rind");
-    assert(test.get_ingred(3) == "avocado rind");
-    test.change_ingred(4,"lemon");
-    assert(test.get_ingred(4) == "lemon");
-    test.change_ingred(5," chicken");
-    assert(test.get_ingred(5) == " chicken");
-    test.change_ingred(6," seeded watermelon ");
-    assert(test.get_ingred(6) == " seeded watermelon ");
-    test.change_ingred(7,"5 beets");
-    assert(test.get_ingred(7) == "5 beets");
+//     recipe test(test2);
+//     test.change_ingred(0,"apple");
+//     assert(test.get_ingred(0) == "apple");
+//     test.change_ingred(1," b a n a n a ");
+//     assert(test.get_ingred(1) == " b a n a n a ");
+//     test.change_ingred(2," b a na n a ");
+//     assert(test.get_ingred(2) == " b a na n a ");
+//     test.change_ingred(3,"avocado rind");
+//     assert(test.get_ingred(3) == "avocado rind");
+//     test.change_ingred(4,"lemon");
+//     assert(test.get_ingred(4) == "lemon");
+//     test.change_ingred(5," chicken");
+//     assert(test.get_ingred(5) == " chicken");
+//     test.change_ingred(6," seeded watermelon ");
+//     assert(test.get_ingred(6) == " seeded watermelon ");
+//     test.change_ingred(7,"5 beets");
+//     assert(test.get_ingred(7) == "5 beets");
 
-    cout << "PASSED. \n";
-}
+//     cout << "PASSED. \n";
+// }
 
-void delete_ingred_test(){
-    cout << "Testing delete_ingred_test(): ";
+// void delete_ingred_test(){
+//     cout << "Testing delete_ingred_test(): ";
     
-    recipe test(test2);
-    test.delete_ingred(test.get_num_ingreds());
-    assert((test.get_num_ingreds() + 1) == test2.get_num_ingreds());
-    test.delete_ingred(0);
-    assert((test.get_num_ingreds() + 2) == test2.get_num_ingreds());
-    assert(test.get_ingred(0) == test2.get_ingred(1));
-    assert(test.get_ingred(1) == test2.get_ingred(2));
-    assert(test.get_ingred(2) == test2.get_ingred(3));
-    assert(test.get_ingred(3) == test2.get_ingred(4));
-    assert(test.get_ingred(4) == test2.get_ingred(5));
-    assert(test.get_ingred(5) == test2.get_ingred(6));
+//     recipe test(test2);
+//     test.delete_ingred(test.get_num_ingreds());
+//     assert((test.get_num_ingreds() + 1) == test2.get_num_ingreds());
+//     test.delete_ingred(0);
+//     assert((test.get_num_ingreds() + 2) == test2.get_num_ingreds());
+//     assert(test.get_ingred(0) == test2.get_ingred(1));
+//     assert(test.get_ingred(1) == test2.get_ingred(2));
+//     assert(test.get_ingred(2) == test2.get_ingred(3));
+//     assert(test.get_ingred(3) == test2.get_ingred(4));
+//     assert(test.get_ingred(4) == test2.get_ingred(5));
+//     assert(test.get_ingred(5) == test2.get_ingred(6));
 
-    cout << "PASSED. \n";
-}
+//     cout << "PASSED. \n";
+// }
 
-void add_diet_test(){
-    cout << "Testing add_diet_test(): ";
+// void add_diet_test(){
+//     cout << "Testing add_diet_test(): ";
 
-    recipe test(test1);
-    test.add_diet("meat");
-    assert(test.get_diet(test.get_num_diets()-1) == "meat");
-    test.add_diet("vegetarian");
-    assert(test.get_diet(test.get_num_diets()-1) == "vegetarian");
-    test.add_diet("vegetarian");
-    assert(test.get_diet(test.get_num_diets()-1) == "vegetarian");
-    test.add_diet("vegan");
-    assert(test.get_diet(test.get_num_diets()-1) == "vegan");
-    test.add_diet("gluten-free");
-    assert(test.get_diet(test.get_num_diets()-1) == "gluten-free");
-    test.add_diet("low-sugar");
-    assert(test.get_diet(test.get_num_diets()-1) == "low-sugar");
-    test.add_diet("pescatarian");
-    assert(test.get_diet(test.get_num_diets()-1) == "pescatarian");
-    test.add_diet("dairy free");
-    assert(test.get_diet(test.get_num_diets()-1) == "dairy free");
-    test.add_diet("n/a");
-    assert(test.get_diet(test.get_num_diets()-1) == "n/a");
-    assert(test.get_num_diets() == 1);
+//     recipe test(test1);
+//     test.add_diet("meat");
+//     assert(test.get_diet(test.get_num_diets()-1) == "meat");
+//     test.add_diet("vegetarian");
+//     assert(test.get_diet(test.get_num_diets()-1) == "vegetarian");
+//     test.add_diet("vegetarian");
+//     assert(test.get_diet(test.get_num_diets()-1) == "vegetarian");
+//     test.add_diet("vegan");
+//     assert(test.get_diet(test.get_num_diets()-1) == "vegan");
+//     test.add_diet("gluten-free");
+//     assert(test.get_diet(test.get_num_diets()-1) == "gluten-free");
+//     test.add_diet("low-sugar");
+//     assert(test.get_diet(test.get_num_diets()-1) == "low-sugar");
+//     test.add_diet("pescatarian");
+//     assert(test.get_diet(test.get_num_diets()-1) == "pescatarian");
+//     test.add_diet("dairy free");
+//     assert(test.get_diet(test.get_num_diets()-1) == "dairy free");
+//     test.add_diet("n/a");
+//     assert(test.get_diet(test.get_num_diets()-1) == "n/a");
+//     assert(test.get_num_diets() == 1);
 
-    cout << "PASSED. \n";
-}
+//     cout << "PASSED. \n";
+// }
 
-void delete_diet_test(){
-    cout << "Testing delete_diet_test(): ";
+// void delete_diet_test(){
+//     cout << "Testing delete_diet_test(): ";
 
-    recipe test(test3);
-    test.delete_diet(test.get_num_diets());
-    assert(test.get_num_diets() + 1 == test3.get_num_diets());
-    test.delete_diet(0);
-    assert(test.get_num_diets() + 2 == test3.get_num_diets());
-    assert(test.get_diet(0) == test3.get_diet(1));
-    assert(test.get_diet(1) == test3.get_diet(2));
+//     recipe test(test3);
+//     test.delete_diet(test.get_num_diets());
+//     assert(test.get_num_diets() + 1 == test3.get_num_diets());
+//     test.delete_diet(0);
+//     assert(test.get_num_diets() + 2 == test3.get_num_diets());
+//     assert(test.get_diet(0) == test3.get_diet(1));
+//     assert(test.get_diet(1) == test3.get_diet(2));
 
-    cout << "PASSED. \n";
-}
+//     cout << "PASSED. \n";
+// }

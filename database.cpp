@@ -6,6 +6,8 @@
 #include <ncurses.h>
 #include <fstream>
 #include <regex>
+#include <climits>
+#include <cmath>
 
 using namespace std;
 
@@ -78,7 +80,7 @@ using namespace std;
         }
     }
 
-    string database::vector_to_string(const vector<string> list){
+    string vector_to_string(const vector<string> list){
         string info = "";
         for (int i = 0; i < list.size(); i++){
             info += list.at(i);
@@ -181,16 +183,14 @@ using namespace std;
     void database::print_recipe(vector<const recipe*>& r,int i){
         r[i]->print();
     }
-    
-   void database::search_recipe_name_full(vector<const recipe*>& results, vector<string>& print){
-        string s = "";
+
+    void database::prep_results(vector<const recipe*>& results, vector<string>& print){
         results.clear();
         print.clear();
-        cin.clear();
-        cin.ignore(256,'\n');
-        cout << "Enter exact name to search: ";
-        getline(cin, s);
+    }
 
+   void database::search_recipe_name_full(const string s, vector<const recipe*>& results, vector<string>& print){
+        prep_results(results,print);
         for (int i = 0; i < recipe_box.size(); i++){
             if (recipe_box.at(i).get_name() == s){
                 results.push_back(&(recipe_box.at(i)));
@@ -200,15 +200,8 @@ using namespace std;
         }
     }
 
-    void database::search_recipe_name_part(vector<const recipe*>& results, vector<string>& print){
-        string s = "";
-        results.clear();
-        print.clear();
-        cin.clear();
-        cin.ignore(256,'\n');
-        cout << "Enter name keyword to search: ";
-        getline(cin, s);
-
+    void database::search_recipe_name_part(const string s, vector<const recipe*>& results, vector<string>& print){
+        prep_results(results,print);
         for (int i = 0; i < recipe_box.size(); i++){
             string name = recipe_box.at(i).get_name();
             if (name.find(s) != std::string::npos){
@@ -220,8 +213,7 @@ using namespace std;
     }
 
     void database::search_diet(const string s, vector<const recipe*>& results, vector<string>& print){
-        results.clear();
-        print.clear();
+        prep_results(results,print);
         cin.clear();
         cin.ignore(256,'\n');
         for (int i = 0; i < recipe_box.size(); i++){
@@ -238,8 +230,7 @@ using namespace std;
     }
 
     void database::search_meal(const string s, vector<const recipe*>& results, vector<string>& print){
-        results.clear();
-        print.clear();
+        prep_results(results,print);
         cin.clear();
         cin.ignore(256,'\n');
         
@@ -253,14 +244,8 @@ using namespace std;
         }
     }
 
-    void database::search_recipe_ingred_full(vector<const recipe*>& results, vector<string>& print){
-        string s = "";
-        results.clear();
-        print.clear();
-        cin.clear();
-        cin.ignore(256,'\n');
-        cout << "Enter exact ingredient to search: ";
-        getline(cin, s);
+    void database::search_recipe_ingred_full(const string s, vector<const recipe*>& results, vector<string>& print){
+        prep_results(results,print);
 
         for (int i = 0; i < recipe_box.size(); i++){
             vector<string> ingreds = recipe_box.at(i).get_ingreds();
@@ -275,14 +260,8 @@ using namespace std;
         }
     }
 
-    void database::search_recipe_ingred_part(vector<const recipe*>& results, vector<string>& print){
-        string s = "";
-        results.clear();
-        print.clear();
-        cin.clear();
-        cin.ignore(256,'\n');
-        cout << "Enter ingredient keyword to search: ";
-        getline(cin, s);
+    void database::search_recipe_ingred_part(const string s, vector<const recipe*>& results, vector<string>& print){
+        prep_results(results,print);
 
         for (int i = 0; i < recipe_box.size(); i++){
             vector<string> ingreds = recipe_box.at(i).get_ingreds();
@@ -297,14 +276,8 @@ using namespace std;
         }
     }
 
-    void database::search_recipe_time_full(vector<const recipe*>& results, vector<string>& print){
-        int t = 0;
-        results.clear();
-        print.clear();
-        cin.clear();
-        cin.ignore(256,'\n');
-        cout << "Enter exact time to search: ";
-        cin >> t;
+    void database::search_recipe_time_full(const int t, vector<const recipe*>& results, vector<string>& print){
+        prep_results(results,print);
 
         for (int i = 0; i < recipe_box.size(); i++){
             if (recipe_box.at(i).get_time() == t){
@@ -316,17 +289,8 @@ using namespace std;
         }
     }
 
-    void database::search_recipe_time_range(vector<const recipe*>& results, vector<string>& print){
-        int t1 = 0;
-        int t2 = 0;
-        results.clear();
-        print.clear();
-        cin.clear();
-        cin.ignore(256,'\n');
-        cout << "Enter lower time rangeto search: ";
-        cin >> t1;
-        cout << "Enter upper time rangeto search: ";
-        cin >> t2;
+    void database::search_recipe_time_range(const int t1, const int t2, vector<const recipe*>& results, vector<string>& print){
+        prep_results(results,print);
 
         for (int i = 0; i < recipe_box.size(); i++){
             if (recipe_box.at(i).get_time() >= t1 && recipe_box.at(i).get_time() <= t2){
@@ -339,8 +303,7 @@ using namespace std;
     }
 
     void database::list_names_alpha(vector<const recipe*>& results, vector<string>& print){
-        results.clear();
-        print.clear();
+        prep_results(results,print);
         for (int i = 0; i < rb_by_name.size(); i++){
             results.push_back(rb_by_name[i]);
             string name = rb_by_name[i]->get_name();
@@ -358,8 +321,7 @@ using namespace std;
     }
 
     void database::list_times_up(vector<const recipe*>& results, vector<string>& print){
-        results.clear();
-        print.clear();
+        prep_results(results,print);
         for (int i = 0; i < rb_by_time.size(); i++){
             results.push_back(rb_by_time[i]);
             string info = rb_by_time[i]->get_name() + "   " + to_string(rb_by_time[i]->get_time()) + " minutes";
@@ -422,11 +384,6 @@ using namespace std;
         else 
             return mid;
     }
-    
-    void database::update_by_name_by_time(){
-        add_by_name(recipe_box[recipe_box.size()-1]);
-        //add_by_time(recipe_box[recipe_box.size()-1]);
-    }
 
     void database::add_recipe(recipe r){
         recipe_box.push_back(r);
@@ -466,8 +423,24 @@ using namespace std;
         return rb_by_time.at(i);
     }
     
-    
+    bool database::not_duplicate(recipe r){
+        bool result = true;
+        for(int i = 0; i < recipe_box.size(); i++){
+            if(existing_url(r.get_url())){
+                result = false;
+            }
+        }
 
+        return result;
+    }
 
-
-
+    bool database::existing_url(string url){        
+        bool existing = false;
+        
+        for (int i = 0; i < recipe_box.size(); i++){
+            if (recipe_box.at(i).get_url() == url){
+                existing = true;
+            }
+        }
+        return existing;
+    }

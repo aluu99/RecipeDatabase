@@ -36,7 +36,6 @@ void delete_recipe_test();
 void is_url_test();
 
 // Recipe Tests
-bool operator==(recipe a, recipe b);
 void recipe_dflt_constructor_test();
 void recipe_reg_constructor_test();
 void recipe_copy_constructor_test();

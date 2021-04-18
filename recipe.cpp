@@ -1,25 +1,28 @@
 #include "recipe.h"
+#include "database.h"
 #include "cmpt_error.h"
 #include <iostream>
 #include <vector>
 
 using namespace std;
-    /***************************CONSTRUCTORS*********************/
-    // default constructor
+
+    /***************************CON/DE-STRUCTORS***************************/
+
+    // Default constructor
     recipe::recipe(){}
 
-    // constructor
+    // Constructor
     recipe::recipe(string n, string u, int t, string m, vector<string> i, vector<string> d)
     : name(n), url(u), time(t), meal(m), ingreds(i), diet(d){ }
 
-    // copy constructor
+    // Copy constructor
     recipe::recipe(const recipe& other)
     : recipe(other.name,other.url, other.time,other.meal,other.ingreds,other.diet) { }
 
-    // destructor
-    recipe::~recipe(){
-        
-    }
+    // Destructor
+    recipe::~recipe(){}
+
+    /******************************OVERLOADING*****************************/
 
     recipe& recipe::operator=(const recipe& r){
         set_name(r.get_name());
@@ -31,9 +34,20 @@ using namespace std;
         return *this;
     }
 
-    /***************************METHODS*********************/
+    bool operator==(recipe a, recipe b){
+        if(a.get_name() != b.get_name()) return false;
+        if(a.get_url() != b.get_url()) return false;
+        if(a.get_time() != b.get_time()) return false;
+        if(a.get_meal() != b.get_meal()) return false;
+        if(a.get_ingreds() != b.get_ingreds()) return false;
+        if(a.get_diets() != b.get_diets()) return false;
+        return true;
+    }
+
+    /********************************METHODS******************************/
 
     // GETTER METHODS
+    
     string recipe::get_name() const{
         return name;
     }
@@ -74,26 +88,21 @@ using namespace std;
         return diet.size();
     }
 
-
     // SETTER METHODS
+
     void recipe::set_name(string s){
         name = s;
     }
 
-    void recipe::set_url(string s) {
+    void recipe::set_url(string s){
         url = s;
     }
 
     void recipe::set_time(int t){
-        if(t < 0){
-            cmpt::error("Invalid time amount passed.");
-        }
-
         time = t;
     }
 
-    void recipe::set_meal(string s){
-        
+    void recipe::set_meal(string s){  
         meal = s;
     }
 
@@ -108,50 +117,41 @@ using namespace std;
         diet = d;
     }
 
-    // OTHER METHODS
-    void recipe::add_ingred(string s){
-        ingreds.push_back(s);
-    }
+    // // OTHER METHODS
 
-    void recipe::change_ingred(int i, string s){
-        ingreds.at(i) = s;
-    }
+    // // Edit Ingredients
+    // void recipe::add_ingred(string s){
+    //     ingreds.push_back(s);
+    // }
 
-    void recipe::delete_ingred(int index){
-        ingreds.erase(ingreds.begin() + index);
-    }
+    // void recipe::change_ingred(int i, string s){
+    //     ingreds.at(i) = s;
+    // }
 
-    void recipe::add_diet(string d){
-        // if n/a is chosen, we erase all othe rdiets
-        if(d == "n/a"){
-            diet.clear();
-        }
-        
-        diet.push_back(d);
-    }
+    // void recipe::delete_ingred(int index){
+    //     ingreds.erase(ingreds.begin() + index);
+    // }
 
-    void recipe::delete_diet(int index){
-        diet.erase(diet.begin() + index);
-    }
+    // // Edit Diets
+    // void recipe::add_diet(string d){
+    //     // if n/a is chosen, we erase all other diets
+    //     if(d == "n/a"){
+    //         diet.clear();
+    //     }
+    //     diet.push_back(d);
+    // }
+
+    // void recipe::delete_diet(int index){
+    //     diet.erase(diet.begin() + index);
+    // }
+
+    // Print Recipe Info
 
     void recipe::print() const{
         cout << "Name: " << name << "\n";
         cout << "URL: " << url << "\n";
         cout << "Time to make: " << time << " minutes \n";
         cout << "Meal type: " << meal << "\n";
-        cout << "Ingredients: ";
-
-        for(int i = 0; i < ingreds.size() - 1; i++){
-            cout << ingreds[i] << ", ";
-        }
-        
-        cout << ingreds[ingreds.size() - 1] << "\n";
-
-        cout << "Diets: ";
-
-        for(int i = 0; i < diet.size() - 1; i++){
-            cout << diet[i] << ", ";
-        }
-
-        cout << diet[diet.size() - 1] << "\n";
+        cout << "Ingredients: " << vector_to_string(ingreds) << "\n";
+        cout << "Diets: " << vector_to_string(diet) << "\n";
     }
