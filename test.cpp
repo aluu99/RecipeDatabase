@@ -179,7 +179,7 @@ void database_file_constructor_test(){
     cout << "Testing file database constructor: ";
 
     database test("test.txt");
-    database test0("my_recipes.txt");
+    database test0("test2.txt");
     for (int i = 0; i < test0.size(); i++){
         assert(test0.get(i).get_name() == recipes[i].get_name());
         assert(test0.get(i).get_url() == recipes[i].get_url());

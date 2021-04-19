@@ -14,6 +14,7 @@
 #    unsigned numbers
 #   -Wnon-virtual-dtor warns about non-virtual destructors
 #   -g puts debugging info into the executables (makes them larger)
+
 CPPFLAGS = -std=c++17 -Wall -Wextra -Werror -Wfatal-errors -Wno-sign-compare -Wnon-virtual-dtor -g
 
 main_test: main.o menu.o recipe.o database.o test.o

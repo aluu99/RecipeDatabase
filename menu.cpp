@@ -531,6 +531,8 @@ using namespace std;
             print_title("Are you sure you want to delete?");
         }else if(page == recipe_options){
             print_title("Recipe Options");
+        }else if(page == print_results){
+            print_title("Search Results");
         }
     }
 

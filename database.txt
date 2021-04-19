@@ -1,66 +1,138 @@
- 
- 
-1
-snack
-
-n/a
-chicken soup
-www.eatsoup.ca
-45
+delicious egg salad sandwhiches
+https://www.allrecipes.com/recipe/147103/delicious-egg-salad-for-sandwiches/
+35
 lunch
-chicken, broth, celery, carrots
-meat, dairy free
-chocolate chip cookies
-https://www.allrecipes.com/recipe/277079/cookies/
-20
+eggs, mayonaise, yellow mustard, chopped green onion, salt and pepper, paprika
+vegetarian, low-sugar, pescatarian, dairy free
+fluffy pancakes
+https://www.tasteofhome.com/recipes/fluffy-pancakes/
+15
+breakfast
+flour, sugar, baking powder, salt, egg, milk, butter
+vegetarian
+vegan chocolate chip cookies
+https://www.loveandlemons.com/best-healthy-snacks/
+24
+snack
+flour, baking powder, baking soda, coconut oil, tahini, water, vanilla extract, dark chocolate chips
+vegan, vegetarian, dairy free, pescatarian
+garlic butter baked salmon
+https://cafedelites.com/sheet-pan-garlic-butter-baked-salmon/
+35
+dinner
+fingerling potatoes, olive oil, salt, black pepper, skinless salmon fillets, garlic minced, parsley, lemon juice, unsalted butter, asparagus, dry white wine, lemon slices
+gluten-free, pescatarian
+fully loaded carrot cake
+https://www.thekitchenmagpie.com/fully-loaded-carrot-cake/
+50
 dessert
-milk, egg yolks, vanilla extract, flour, sugar, salt, butter, chocolate chips
-vegetarian, low-sugar
- mojito
-https://www.allrecipes.com/recipe/277079/slurp/
-2
+carrots, raisins, crushed pineapple reserve juice, pineapple juice, brown sugar, eggs, white sugar, oil, vanilla, all purpuse flour, baking soda, salt, cinnamon, nutmeg, cloves, ginger, walnuts, cream cheese frosting
+vegetarian, pescatarian
+perfect iced coffee
+https://damndelicious.net/2015/07/08/perfect-iced-coffee/
+5
 drink
-lime, soda, mint, sugar, ice, salt
-vegetarian, gluten-free, vegan, low-sugar
-nachos 
-https://www.allrecipes.com/recipe/chip/
+coffee, half and half, sugar, water, vanilla extract
+vegetarian, gluten-free, pescatarian
+kid's easy omlette
+https://www.bbc.co.uk/food/recipes/baileys_breakfast_24338
+40
+breakfast
+eggs, milk, butter, tomato, cheddar, parsely, ham, salt, pepper
+vegetarian, gluten-free, low-sugar, pescatarian
+chicken fajitas
+https://www.delish.com/cooking/recipe-ideas/a19665622/easy-chicken-fajitas-recipe/
+75
+lunch
+olive oil, lime juice, cumin, crushed red pepper flakes, boneless skinless chicken breasts, salt, ground black pepper, bell peppers, large onion, tortillas
+meat, low-sugar, dairy free
+roasted vegetables
+https://www.allrecipes.com/recipe/9377/roasted-vegetables/
+55
+dinner
+butternut squash, red bell peppers, sweet potato, yukon gold potatoes, red onion, fresh thyme, fresh rosemary, olive oil, balsamic vinegar, black pepper
+vegetarian, vegan, gluten-free, low-sugar, pescatarian, dairy free
+easy hummus (better than store-bought)
+https://www.inspiredtaste.net/15938/easy-and-smooth-hummus-recipe/
 10
 snack
-chips, cheese
-vegetarian
-shepherd's pie
-https://www.allrecipes.com/recipe/277079/sweet-potato-and-venison-shepherds-pie/
-170
-dinner
-potato, butter, milk, salt, black pepper, dried sage, nutmeg, cheese
-pescatarian
-vanilla crepes
-https://www.allrecipes.com/recipe/95817/vanilla-crepes/
-30
+chickpeas, lemon juice, tahini, garlic clove, olive oil, cumin, salt, water, paprika
+vegetarian, vegan, gluten-free, low-sugar, dairy free
+classic margarita
+https://www.acouplecooks.com/classic-margarita/
+5
+drink
+tequila blanco, cointreau, fresh lime juice, kosher salt, lime wedge
+vegetarian, vegan, gluten-free, dairy free
+twice baked breakfast potatoes
+https://www.spoonforkbacon.com/twice-baked-breakfast-potatoes/
+84
 breakfast
-milk, egg yolks, vanilla extract, flour, sugar, salt, butter
-n/a
-apple pie
-https://www.allrecipes.com/recipe/95817/pie/
-120
+russet potatoes, unsalted, heavy cream, bacon, eggs, cheddar, chives, salt, pepper
+meat, gluten-free
+best fudgy cocoa brownies
+https://cafedelites.com/best-fudgy-cocoa-brownies/
+30
 dessert
-milk, egg yolks, vanilla extract, flour, sugar, salt, butter, apples
-gluten-free
-toast
-https://e.ca
-4
+butter, cooking oil, sugar, eggs, vanilla extract, flour, cocoa powder, salt
+vegetarian, dairy free
+best greek salad
+https://www.cookingclassy.com/greek-salad/
+20
 lunch
-, bread
-vegetarian, vegan, gluten-free, low-sugar, pescatarian
-soup
-http://.ca
-38
-lunch
-, ingreds
-meat
-burger
-https://burger.com
-12
+olive oil, lemon juice, white wine vinegar, garlic, parsely, dried oregano, honey, salt, roma tomatoes, cucumber, red onion, bel pepper, olives, feta, avocado
+vegetarian, gluten-free, low-sugar
+homemade cheese crackers
+https://sallysbakingaddiction.com/homemade-cheese-crackers/
+90
+snack
+cheddar cheese, flour, cornstarch, salt, butter, cold water, salt
+vegetarian, low-sugar
+homemade hot chocolate
+https://celebratingsweets.com/homemade-hot-chocolate/
+6
+drink
+milk, cocoa powder, sugar, bittersweet chocolate chips, vanilla extract
+vegetarian, gluten-free
+tennessee meatloaf
+https://www.allrecipes.com/recipe/232247/tennessee-meatloaf/
+100
 dinner
-, burger
-meat
+ketchup, brown sugar, vinegar, cooking spray, onion, green bell pepper, garlic, eggs, thyme, salt, black pepper, mustard, worcestershire, hot pepper sauce, milk, quick cooking oats, ground beef, ground pork, ground veal
+mea
+berry cake
+https://tastesbetterfromscratch.com/berry-cake-lemon-cream-mousse/
+50
+dessert
+lemon mousse, yellow cake, raspberries, blueberries, blackberries, strawberries
+vegetarian 
+the very best granola
+https://cookieandkate.com/healthy-granola-recipe/
+26
+breakfast
+rolled oats, nuts, seeds, salt, cinnamon, coconut oil, maple syrup, vanilla extract, dried fruit, coconut flakes
+vegan, low-sugar, dairy free
+microwave potato chips
+https://tasty.co/recipe/easy-microwave-potato-chips
+15
+snack
+russet potato, olive oil, salt
+vegetarian, vegan, dairy free, gluten-free, low-sugar
+sour whiskey
+https://www.acouplecooks.com/naturally-sweetened-whiskey-sour/
+3
+drink
+bourbon, whiskey, lemon juice, maple syrup, orange peel, ice
+vegetarian, vegan, gluten-free, dairy free
+butter chicken
+https://www.recipetineats.com/butter-chicken/
+35
+dinner
+plain yogurt, lemon juice, tumeric, garam masala, chilli powder, cumin, ginger, garlic, chicken thigh, ghee, tomato puree, heavy cream, sugar, salt, rice
+meat, low-sugar
+homemade vanilla ice cream
+https://www.tasteofhome.com/recipes/homemade-vanilla-ice-cream/
+20
+dessert
+heavy whipping cream, half and half, sugar, vanilla extract
+vegetarian, gluten-free

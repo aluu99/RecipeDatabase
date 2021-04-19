@@ -1,0 +1,66 @@
+
+ 
+1
+snack
+
+n/a
+chicken soup
+www.eatsoup.ca
+45
+lunch
+chicken, broth, celery, carrots
+meat, dairy free
+chocolate chip cookies
+https://www.allrecipes.com/recipe/277079/cookies/
+20
+dessert
+milk, egg yolks, vanilla extract, flour, sugar, salt, butter, chocolate chips
+vegetarian, low-sugar
+ mojito
+https://www.allrecipes.com/recipe/277079/slurp/
+2
+drink
+lime, soda, mint, sugar, ice, salt
+vegetarian, gluten-free, vegan, low-sugar
+nachos 
+https://www.allrecipes.com/recipe/chip/
+10
+snack
+chips, cheese
+vegetarian
+shepherd's pie
+https://www.allrecipes.com/recipe/277079/sweet-potato-and-venison-shepherds-pie/
+170
+dinner
+potato, butter, milk, salt, black pepper, dried sage, nutmeg, cheese
+pescatarian
+vanilla crepes
+https://www.allrecipes.com/recipe/95817/vanilla-crepes/
+30
+breakfast
+milk, egg yolks, vanilla extract, flour, sugar, salt, butter
+n/a
+apple pie
+https://www.allrecipes.com/recipe/95817/pie/
+120
+dessert
+milk, egg yolks, vanilla extract, flour, sugar, salt, butter, apples
+gluten-free
+toast
+https://e.ca
+4
+lunch
+, bread
+vegetarian, vegan, gluten-free, low-sugar, pescatarian
+soup
+http://.ca
+38
+lunch
+, ingreds
+meat
+burger
+https://burger.com
+12
+dinner
+, burger
+meat
